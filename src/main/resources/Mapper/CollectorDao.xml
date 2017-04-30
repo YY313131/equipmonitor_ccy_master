@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.ccy.dao.CollectorDao">
+
+	<resultMap type="com.ccy.bean.Collector" id="collector">
+		<id column="id" jdbcType="INTEGER" property="id" />
+		<result column="deviceId" jdbcType="INTEGER" property="deviceId" />
+		<result column="collectorNo" jdbcType="VARCHAR" property="collectorNo" />
+		<result column="collectorState" jdbcType="VARCHAR" property="collectorState" />
+	</resultMap>
+
+	<resultMap type="com.ccy.bean.CollectParameter" id="collectParameter">
+		<result column="deviceId" jdbcType="INTEGER" property="deviceId"/>
+		<result column="subsystemId" jdbcType="INTEGER" property="subsystemId" />
+		<result column="collectorId" jdbcType="INTEGER" property="collectorId" />		
+		<result column="parameterIndex" jdbcType="INTEGER" property="parameterIndex" />
+	</resultMap>
+
+	<insert id="add" parameterType="com.ccy.bean.Collector">
+		insert into collector(<include refid="columns" />)
+		values(0,#{deviceId},#{collectorNo},#{collectorState})
+	</insert>
+
+	<insert id="addCollectParameter" parameterType="com.ccy.bean.CollectParameter">
+		insert into collector_parameter(deviceId,subsystemId,collectorId,parameterId,parameterIndex)
+		values(#{deviceId},#{subsystemId},#{collectorId},#{parameterId},#{parameterIndex})
+	</insert>
+
+	<delete id="deleteById" parameterType="int">
+		delete from collector where id=#{_parameter}
+	</delete>
+
+	<delete id="deleteByDeviceId" parameterType="int">
+		delete from collector where deviceId=#{_parameter}
+	</delete>
+
+	<delete id="deleteCollectParameter">
+		delete from collector_parameter 
+		where 
+			subsystemId=#{subsystemId} 
+			and parameterId=#{parameterId}
+			and collectorId=#{collectorId}
+	</delete>
+	
+	<delete id="deleteCollectorParametersByCollectorId" parameterType="int">
+		delete from collector_parameter where collectorId=#{_parameter}
+	</delete>
+	
+	<update id="update" parameterType="com.ccy.bean.Collector">
+		update 
+			collector
+		set 
+			deviceId=#{deviceId},
+			collectorNo=#{collectorNo},
+			collectorState=#{collectorState}
+		where 
+			id=#{id}
+	</update>
+
+	<select id="getById" parameterType="int" resultMap="collector">
+		select <include refid="columns" />
+		from collector where collector.id=#{_parameter}        
+	</select>
+
+	<select id="getByDeviceId" parameterType="int" resultMap="collector">
+		select <include refid="columns" />
+		from collector where collector.deviceId=#{_parameter}
+	</select>
+	
+	<select id="getByCompanyId" parameterType="int" resultMap="collector">
+		select <include refid="columns" /> from collector c
+		where c.deviceId in (select id from device where companyId=#{_parameter})
+	</select>
+
+	<select id="getBySubsystemIdAndParameterId" resultMap="collectParameter">
+		select 
+			deviceId,subsystemId,collectorId,parameterId,parameterIndex
+		from 
+			collector_parameter cp 
+		where
+			cp.subsystemId=#{subsystemId} and parameterId=#{parameterId}
+	</select>
+	
+	<select id="getCollectParameters1" parameterType="int"
+		resultMap="collectParameter">
+		select 
+			deviceId,subsystemId,collectorId,parameterId,parameterIndex
+		from
+			collector_parameter cp
+		where
+			cp.collectorId=#{_parameter}
+	</select>
+	
+	<select id="getCollectParameters2" resultMap="collectParameter">
+		select 
+			deviceId,subsystemId,collectorId,parameterId,parameterIndex
+		from
+			collector_parameter cp
+		where
+			cp.collectorId=#{collectorId} and cp.subsystemId=#{subsystemId}
+	</select>
+	
+	<sql id="columns">id,deviceId,collectorNo,collectorState</sql>
+
+</mapper>

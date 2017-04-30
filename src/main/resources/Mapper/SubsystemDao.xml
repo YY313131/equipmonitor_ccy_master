@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.ccy.dao.SubsystemDao">
+
+	<resultMap type="com.ccy.bean.Subsystem" id="subsystem">
+		<id column="id" jdbcType="INTEGER" property="id" />
+		<result column="deviceId" jdbcType="INTEGER" property="deviceId" />
+		<result column="subsystemNo" jdbcType="VARCHAR" property="subsystemNo" />
+		<result column="subsystemName" jdbcType="VARCHAR" property="subsystemName" />
+		<collection property="parameters" ofType="com.ccy.bean.Parameter">
+			<id column="parameterId" jdbcType="INTEGER" property="id" />
+			<result column="companyId" jdbcType="INTEGER" property="companyId" />
+			<result column="sensorNo" jdbcType="VARCHAR" property="sensorNo" />
+			<result column="sensorName" jdbcType="VARCHAR" property="sensorName" />
+			<result column="parameterNo" jdbcType="VARCHAR" property="parameterNo" />
+			<result column="parameterName" jdbcType="VARCHAR" property="parameterName" />
+			<result column="upper" jdbcType="DOUBLE" property="upper" />
+			<result column="lower" jdbcType="DOUBLE" property="lower" />
+			<result column="suffix" jdbcType="VARCHAR" property="suffix" />
+		</collection>
+	</resultMap>
+
+	<insert id="add" parameterType="com.ccy.bean.Subsystem">
+		insert into subsystem(<include refid="columns" />)
+		values(0,#{deviceId},#{subsystemNo},#{subsystemName})
+	</insert>
+
+	<insert id="addParameter">
+		insert into subsystem_parameter(subsystemId,parameterId)
+		values(#{subsystemId},#{parameterId})
+	</insert>
+
+	<delete id="deleteById" parameterType="int">
+		delete from subsystem where id=#{_parameter}
+	</delete>
+
+	<delete id="deleteByDeviceId" parameterType="int">
+		delete from subsystem where deviceId=#{_parameter}
+	</delete>
+
+	<delete id="deleteParameter">
+		delete from subsystem_parameter 
+		where subsystemId=#{subsystemId} and parameterId=#{parameterId}
+	</delete>
+	
+	<delete id="deleteParametersBySubsystemId" parameterType="int">
+		delete from subsystem_parameter where subsystemId=#{_parameter}
+	</delete>
+	
+	<update id="update" parameterType="com.ccy.bean.Subsystem">
+		update 
+			subsystem
+		set 
+			deviceId=#{deviceId},
+			subsystemNo=#{subsystemNo},
+			subsystemName=#{subsystemName}
+		where 
+			id=#{id}
+	</update>
+
+	<select id="getById" parameterType="int" resultMap="subsystem">
+		select 
+			s.id,s.deviceId,s.subsystemNo,s.subsystemName,
+			p.id as parameterId,p.companyId,p.sensorNo,p.sensorName,
+			p.parameterNo,p.parameterName,p.upper,p.lower,p.suffix
+		from 
+			subsystem s left join subsystem_parameter sp
+		on 
+			s.id=sp.subsystemId left join parameter p
+		on
+			sp.parameterId=p.id
+		where
+			s.id=#{_parameter}        
+	</select>
+
+	<select id="getByDeviceId" parameterType="int" resultMap="subsystem">
+		select 
+			s.id,s.deviceId,s.subsystemNo,s.subsystemName,
+			p.id as parameterId,p.companyId,p.sensorNo,p.sensorName,
+			p.parameterNo,p.parameterName,p.upper,p.lower,p.suffix
+		from 
+			subsystem s left join subsystem_parameter sp
+		on 
+			s.id=sp.subsystemId left join parameter p
+		on
+			sp.parameterId=p.id
+		where
+			s.deviceId=#{_parameter}
+	</select>
+
+	<sql id="columns">id,deviceId,subsystemNo,subsystemName</sql>
+
+</mapper>

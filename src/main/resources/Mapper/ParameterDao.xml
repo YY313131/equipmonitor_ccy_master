@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.ccy.dao.ParameterDao">
+
+	<resultMap type="com.ccy.bean.Parameter" id="parameter">
+		<id column="id" jdbcType="INTEGER" property="id" />
+		<result column="companyId" jdbcType="INTEGER" property="companyId" />
+		<result column="sensorNo" jdbcType="VARCHAR" property="sensorNo" />
+		<result column="sensorName" jdbcType="VARCHAR" property="sensorName" />
+		<result column="parameterNo" jdbcType="VARCHAR" property="parameterNo" />
+		<result column="parameterName" jdbcType="VARCHAR" property="parameterName" />
+		<result column="upper" jdbcType="DOUBLE" property="upper" />
+		<result column="lower" jdbcType="DOUBLE" property="lower" />
+		<result column="suffix" jdbcType="VARCHAR" property="suffix" />
+	</resultMap>
+
+	<insert id="add" parameterType="com.ccy.bean.Parameter">
+		insert into parameter(<include refid="columns" />)
+		values(0,#{companyId},#{sensorNo},#{sensorName},
+			#{parameterNo},#{parameterName},#{upper},#{lower},#{suffix})
+	</insert>
+	
+	<insert id="deleteById" parameterType="int">
+		delete from parameter where id=#{_parameter}
+	</insert>
+	
+	<update id="update" parameterType="com.ccy.bean.Parameter">
+		update 
+			parameter
+		set 
+			companyId=#{companyId},
+			sensorNo=#{sensorNo},
+			sensorName=#{sensorName},
+			parameterNo=#{parameterNo},
+			parameterName=#{parameterName},
+			upper=#{upper},
+			lower=#{lower},
+			suffix=#{suffix}
+		where 
+			id=#{id}
+	</update>
+
+	<select id="getById" parameterType="int" resultMap="parameter">
+		select <include refid="columns" />
+		from parameter where id=#{_parameter}
+	</select>
+
+	<select id="getByCompanyId" parameterType="int" resultMap="parameter">
+		select <include refid="columns" />
+		from parameter where companyId=#{_parameter}
+	</select>
+	
+	<select id="getBySubsystemId" parameterType="int" resultMap="parameter">
+		select
+			t1.id,t1.companyId,t1.sensorNo,t1.sensorName,
+			t1.parameterNo,t1.parameterName,t1.upper,t1.lower,t1.suffix
+		from 
+			parameter t1 left join subsystem_parameter t2
+		on 
+			t1.id=t2.parameterId
+		where 
+			t2.subsystemId=#{_parameter}
+	</select>
+	
+	<sql id="columns">id,companyId,sensorNo,sensorName,parameterNo,parameterName,upper,lower,suffix</sql>
+
+</mapper>
