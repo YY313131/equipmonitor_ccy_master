@@ -10,7 +10,6 @@ public interface CollectorDao {
 
 	/**
 	 * 添加采集器
-	 * 
 	 * @param collector
 	 * @return 影响数据库的条数
 	 */
@@ -18,9 +17,10 @@ public interface CollectorDao {
 
 	/**
 	 * 添加一个采集参数的信息
-	 * 
 	 * @param collectParameter
+	 *
 	 * @return 影响数据库的条数
+	 *
 	 */
 	int addCollectParameter(CollectParameter collectParameter);
 
@@ -41,8 +41,24 @@ public interface CollectorDao {
 	int deleteByDeviceId(int deviceId);
 
 	/**
+	 * 删除指定id的采集器的所有采集参数信息
+	 *
+	 * @param collectorId
+	 * @return 影响数据库的条数
+	 */
+	int deleteCollectorParametersByCollectorId(int collectorId);
+
+	/**
+	 * 更新指定id的采集器
+	 *
+	 * @param collecotr
+	 * @return 影响数据库的条数
+	 */
+	int update(Collector collecotr);
+
+	/**
 	 * 删除采集器中的一条采集参数信息
-	 * 
+	 *
 	 * @param collectorId
 	 *            采集器id
 	 * @param subsystemId
@@ -52,24 +68,8 @@ public interface CollectorDao {
 	 * @return 影响数据库的条数
 	 */
 	int deleteCollectParameter(@Param("collectorId") int collectorId,
-                               @Param("subsystemId") int subsystemId,
-                               @Param("parameterId") int parameterId);
-
-	/**
-	 * 删除指定id的采集器的所有采集参数信息
-	 * 
-	 * @param collectorId
-	 * @return 影响数据库的条数
-	 */
-	int deleteCollectorParametersByCollectorId(int collectorId);
-
-	/**
-	 * 更新指定id的采集器
-	 * 
-	 * @param collecotr
-	 * @return 影响数据库的条数
-	 */
-	int update(Collector collecotr);
+							   @Param("subsystemId") int subsystemId,
+							   @Param("parameterId") int parameterId);
 
 	/**
 	 * 获取指定id的采集器

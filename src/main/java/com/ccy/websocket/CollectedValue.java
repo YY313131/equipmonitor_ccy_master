@@ -13,5 +13,5 @@ public class CollectedValue {
     /**
      * 参数编号
      */
-    public int paramCode;
+    public int paramNo;
 }

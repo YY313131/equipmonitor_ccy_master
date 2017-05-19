@@ -1,8 +1,10 @@
 package com.ccy.websocket;
 
+
 import io.netty.buffer.ByteBuf;
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelHandlerContext;
+
 import io.netty.channel.SimpleChannelInboundHandler;
 import io.netty.channel.group.ChannelGroup;
 import io.netty.channel.group.DefaultChannelGroup;
@@ -11,7 +13,7 @@ import io.netty.util.concurrent.GlobalEventExecutor;
 /**
  * Created by caihanbin on 2017/4/29.
  */
-public class nettyServerHandler extends SimpleChannelInboundHandler<String> {
+public class nettyServerHandler extends SimpleChannelInboundHandler<Object> {
     /**
      * A thread-safe Set  Using ChannelGroup, you can categorize Channels into a meaningful group.
      * A closed Channel is automatically removed from the collection,
@@ -29,15 +31,23 @@ public class nettyServerHandler extends SimpleChannelInboundHandler<String> {
     @Override
     public void handlerRemoved(ChannelHandlerContext ctx) throws Exception {  // (3)
         Channel incoming = ctx.channel();
-        // Broadcast a message to multiple Channels
+
         channels.writeAndFlush("[SERVER] - " + incoming.remoteAddress() + " 离开\n");
-        // A closed Channel is automatically removed from ChannelGroup,
-        // so there is no need to do "channels.remove(ctx.channel());"
+
     }
     @Override
-    protected void channelRead0(ChannelHandlerContext ctx, String s) throws Exception { // (4)
-        Channel incoming = ctx.channel();
-        System.out.println("[" + incoming.remoteAddress() + "]"+":"+s);
+    protected void channelRead0(ChannelHandlerContext ctx, Object s) throws Exception { // (4)
+        if(s instanceof CCYCollectedData) {
+            CCYCollectedData collectedValue = (CCYCollectedData) s;
+            System.out.println("**************************************");
+            if(collectedValue.errorMsg == null){
+                System.out.println(collectedValue);
+                // TODO...
+            } else {
+                System.out.println(collectedValue.errorMsg);
+            }
+            // TODO...
+        }
     }
 
     @Override
