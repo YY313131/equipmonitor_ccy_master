@@ -77,7 +77,7 @@ public class CCYCollectedData{
         return (Chi << 8) | Cli;
     }
 
-   
+
 
 
 }
