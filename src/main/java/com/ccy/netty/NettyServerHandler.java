@@ -1,7 +1,10 @@
 package com.ccy.netty;
 
 import com.ccy.service.CollectedDataService;
-import com.ccy.service.Impl.CollectedDataServiceImpl;
+
+import com.ccy.utils.CRCUtil;
+
+import io.netty.buffer.Unpooled;
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelHandlerContext;
 
@@ -11,11 +14,9 @@ import io.netty.channel.group.DefaultChannelGroup;
 import io.netty.util.concurrent.GlobalEventExecutor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-
 /**
  * Created by caihanbin on 2017/4/29.
  */
-
 @Component
 public class NettyServerHandler extends SimpleChannelInboundHandler<Object> {
 
@@ -39,9 +40,7 @@ public class NettyServerHandler extends SimpleChannelInboundHandler<Object> {
     @Override
     public void handlerRemoved(ChannelHandlerContext ctx) throws Exception {  // (3)
         Channel incoming = ctx.channel();
-
         channels.writeAndFlush("[SERVER] - " + incoming.remoteAddress() + " 离开\n");
-
     }
     @Override
     protected void channelRead0(ChannelHandlerContext ctx, Object s) throws Exception { // (4)
@@ -50,12 +49,35 @@ public class NettyServerHandler extends SimpleChannelInboundHandler<Object> {
             System.out.println("**************************************");
             if(collectedValue.errorMsg == null){
                 collectedDataService.add(collectedValue);
-                // TODO...
+                responseSensorCollector(ctx, collectedValue);
             } else {
                 System.out.println(collectedValue.errorMsg);
             }
             // TODO...
         }
+    }
+
+    private void responseSensorCollector(ChannelHandlerContext ctx, CCYCollectedData cd) {
+        byte[] resp = new byte[17];
+        resp[0] = 0x68;
+        resp[1] = (byte)cd.areaNo.charAt(0);
+        resp[2] = (byte)cd.areaNo.charAt(1);
+        resp[3] = (byte)cd.areaNo.charAt(2);
+        resp[4] = 0x00;
+        resp[5] = (byte)(cd.collectorNo / 1000);
+        resp[6] = (byte)((cd.collectorNo % 1000) / 100);
+        resp[7] = (byte)((cd.collectorNo % 100) / 10);
+        resp[8] = (byte)(cd.collectorNo % 10);
+        resp[9] = 0x69;
+        resp[10] = 0x02;
+        resp[11] = (byte)(cd.cmd + 0x80);
+        resp[12] = 0x00;
+        resp[13] = 0x00;
+        int crc = CRCUtil.getCRC16(resp, 0, 14);
+        resp[14] = (byte)((crc & 0xFF00) >> 8);
+        resp[15] = (byte)(crc & 0xFF);
+        resp[16] = 0x0D;
+        ctx.channel().writeAndFlush(Unpooled.wrappedBuffer(resp));
     }
 
     @Override

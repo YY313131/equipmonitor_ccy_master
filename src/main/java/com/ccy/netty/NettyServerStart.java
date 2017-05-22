@@ -17,24 +17,11 @@ import java.util.concurrent.TimeUnit;
 public class NettyServerStart {
 
     @Autowired
-    private NettyServer nettyServer;
-
-    private Timer timer = new Timer();
-
-    public NettyServerStart() {
+    public NettyServerStart(final NettyServer nettyServer) {
         System.out.println("------------Spring自动加载 ---------");
         System.out.println("------------启动Netty服务 ---------");
-
-        timer.scheduleAtFixedRate(new TimerTask() {
-            @Override
-            public void run() {
-                if(nettyServer != null){
-                    nettyServer.setServerPort(8888);
-                    ExecutorService executorService= Executors.newCachedThreadPool();
-                    executorService.execute(nettyServer);
-                    timer.cancel();
-                }
-            }
-        }, 3000, 2000);
+        nettyServer.setServerPort(8888);
+        ExecutorService executorService= Executors.newCachedThreadPool();
+        executorService.execute(nettyServer);
     }
 }
