@@ -5,13 +5,17 @@
 
 <mapper namespace="com.ccy.dao.CollectedDataDao">
 
-	<resultMap type="com.ccy.dto.CollectedValue" id="collectedValue">
+	<resultMap type="com.ccy.dto.CollectedValue" id="sensorValue">
 		<result column="value" jdbcType="INTEGER" property="value" />
 		<result column="collectedTime" jdbcType="DATE" property="collectedTime" />	
 	</resultMap>
 
 	<insert id="add">
-		insert into ${tableName}
+		insert into ${tableName} (id, time,
+		<foreach collection="fields" item="field" separator=",">
+			${field}
+		</foreach>
+		)
 		values(0,now(),
 			<foreach collection="values" item="value" separator=",">
 				#{value}
@@ -19,7 +23,7 @@
 		)
 	</insert>
 
-	<select id="getAfter" resultMap="collectedValue">
+	<select id="getAfter" resultMap="sensorValue">
 		select ${fieldName} as value,time
 		from 
 			${tableName}
@@ -28,7 +32,7 @@
 		order by time
 	</select>
 
-	<select id="getBetween" resultMap="collectedValue">
+	<select id="getBetween" resultMap="sensorValue">
 		select ${fieldName} as value,time
 		from 
 			${tableName}

@@ -1,10 +1,8 @@
-package com.ccy.websocket;
+package com.ccy.netty;
 
 import io.netty.buffer.ByteBuf;
 
-import java.nio.Buffer;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -25,7 +23,7 @@ public class CCYCollectedData {
     /**
      * 采集值
      */
-    public List<CollectedValue> collectedValues;
+    public List<SensorValue> sensorValues;
 
     /**
      * 错误信息
@@ -59,15 +57,15 @@ public class CCYCollectedData {
 
                 int dataLength = getInt(data, 12, 2);
                 int len, index = 14;
-                collectedValues = new ArrayList<CollectedValue>(32);
+                sensorValues = new ArrayList<SensorValue>(32);
                 while (index <= dataLength + 11) {
                     len = data[index]; // 中间所有数据占的字节长度
                     byte dataType = data[index + 3];
                     if (dataType == 0x00) { // float
-                        CollectedValue collectedValue = new CollectedValue();
-                        collectedValue.paramNo = getInt(data, index + 1, 2);
-                        collectedValue.value = getFloat(data, index + 5);
-                        collectedValues.add(collectedValue);
+                        SensorValue sensorValue = new SensorValue();
+                        sensorValue.paramNo = getInt(data, index + 1, 2);
+                        sensorValue.value = getFloat(data, index + 5);
+                        sensorValues.add(sensorValue);
                     } else if (dataType == 0x02) {
                         System.out.println(new String(data, index + 2, len - 4));
                     }
@@ -135,6 +133,6 @@ public class CCYCollectedData {
         return "CCYCollectedData{" +
                 "areaNo='" + areaNo + '\'' +
                 ", collectorNo=" + collectorNo +
-                ", collectedValues=" + collectedValues + '}';
+                ", sensorValues=" + sensorValues + '}';
     }
 }

@@ -26,7 +26,7 @@ public class CollectedValue {
 
 	@Override
 	public String toString() {
-		return "CollectedValue [value=" + value + ", time=" + time + "]";
+		return "SensorValue [value=" + value + ", time=" + time + "]";
 	}
 
 }

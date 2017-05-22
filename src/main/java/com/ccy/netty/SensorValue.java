@@ -1,15 +1,13 @@
-package com.ccy.websocket;
+package com.ccy.netty;
 
 /**
  * Created by dsz on 17/5/19.
  */
-public class CollectedValue {
-
+public class SensorValue implements Comparable<SensorValue>{
     /**
      * 采集值
      */
     public float value;
-
     /**
      * 参数编号
      */
@@ -17,9 +15,12 @@ public class CollectedValue {
 
     @Override
     public String toString() {
-        return "CollectedValue{" +
+        return "SensorValue{" +
                 "value=" + value +
                 ", paramNo=" + paramNo +
                 '}';
+    }
+    public int compareTo(SensorValue o) {
+        return paramNo - o.paramNo;
     }
 }

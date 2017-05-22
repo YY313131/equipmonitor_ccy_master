@@ -1,11 +1,11 @@
 package com.ccy.service.Impl;
 
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 
 import com.ccy.bean.CollectParameter;
+import com.ccy.netty.CCYCollectedData;
+import com.ccy.netty.SensorValue;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -27,12 +27,42 @@ public class CollectedDataServiceImpl implements CollectedDataService {
 
 	private Map<String, String> tableNames = new ConcurrentHashMap<String, String>(160);
 
-	private CollectedDataServiceImpl() {
-	}
+	private Map<Integer, Map<Integer, CollectParameter>> cpsMap
+			= new ConcurrentHashMap<Integer, Map<Integer, CollectParameter>>(8);
 
-	public boolean add(int collectorId, List<Double> values) {
+	public boolean add(CCYCollectedData collectedData) {
+		if(collectedData == null)
+			throw new NullPointerException("collectedData");
+
+		int collectorId = collectedData.collectorNo;
+		List<SensorValue> sValues = collectedData.sensorValues;
+
 		String tableName = getTableName(collectorId);
-		return tableName == null ? false : collectedDataDao.add(tableName, values) > 0;
+		List<String> fields = new ArrayList<String>(sValues.size());
+		List<Double> values = new ArrayList<Double>(sValues.size());
+		Map<Integer, CollectParameter> cpMap;
+		if(cpsMap.containsKey(collectorId)){
+			cpMap = cpsMap.get(collectorId);
+		} else {
+			cpMap = getMapFromList(collectorDao.getCollectParameters1(collectorId));
+			if(cpMap != null){
+				cpsMap.put(collectorId, cpMap);
+			}
+		}
+		CollectParameter cp;
+		StringBuilder stringBuilder = new StringBuilder();
+		for(SensorValue sv : sValues){
+			stringBuilder.append('p');
+			if(cpMap.containsKey(sv.paramNo)){
+				cp = cpMap.get(sv.paramNo);
+				stringBuilder.append(cp.getSubsystemId())
+						.append('_').append(cp.getParameterId());
+				values.add((double)sv.value);
+				fields.add(stringBuilder.toString());
+			}
+			stringBuilder.delete(0, stringBuilder.length());
+		}
+		return tableName == null ? false : collectedDataDao.add(tableName, fields, values) > 0;
 	}
 
 	public List<CollectedValue> getAfter(int subsystemId, int parameterId, Date beginTime) {
@@ -88,5 +118,21 @@ public class CollectedDataServiceImpl implements CollectedDataService {
 
 	private String getFieldName(int subsystemId, int parameterId) {
 		return "p" + subsystemId + "_" + parameterId;
+	}
+
+	private Map<Integer, CollectParameter> getMapFromList(List<CollectParameter> cps){
+		if(cps == null || cps.size() == 0)
+			return null;
+
+		Map<Integer, CollectParameter>  cpMap =
+				new TreeMap<Integer, CollectParameter>(new Comparator<Integer>() {
+			public int compare(Integer o1, Integer o2) {
+				return o1.intValue() - o2.intValue();
+			}
+		});
+		for(CollectParameter cp : cps){
+			cpMap.put(cp.getParameterIndex(), cp);
+		}
+		return cpMap;
 	}
 }

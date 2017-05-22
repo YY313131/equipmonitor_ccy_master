@@ -17,6 +17,7 @@ public interface CollectedDataDao {
 	 * @return 数据库受影响的行数
 	 */
 	int add(@Param("tableName") String tableName,
+			@Param("fields") List<String> fields,
             @Param("values") List<Double> values);
 
 	/**

@@ -4,16 +4,17 @@ import java.util.Date;
 import java.util.List;
 
 import com.ccy.dto.CollectedValue;
+import com.ccy.netty.CCYCollectedData;
 
 public interface CollectedDataService {
 
 	/**
 	 * 向指定数据表添加数据
 	 *
-	 * @param values
+	 * @param collectedData
 	 * @return true，数据添加成功；false，数据添加失败
 	 */
-	boolean add(int collectorId, List<Double> values);
+	boolean add(CCYCollectedData collectedData);
 
 	/**
 	 * 获取指定数据表里指定字段在某个时间之后的所有数据

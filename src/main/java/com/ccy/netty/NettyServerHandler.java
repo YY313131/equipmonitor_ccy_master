@@ -1,7 +1,7 @@
-package com.ccy.websocket;
+package com.ccy.netty;
 
-
-import io.netty.buffer.ByteBuf;
+import com.ccy.service.CollectedDataService;
+import com.ccy.service.Impl.CollectedDataServiceImpl;
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelHandlerContext;
 
@@ -9,11 +9,19 @@ import io.netty.channel.SimpleChannelInboundHandler;
 import io.netty.channel.group.ChannelGroup;
 import io.netty.channel.group.DefaultChannelGroup;
 import io.netty.util.concurrent.GlobalEventExecutor;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 /**
  * Created by caihanbin on 2017/4/29.
  */
-public class nettyServerHandler extends SimpleChannelInboundHandler<Object> {
+
+@Component
+public class NettyServerHandler extends SimpleChannelInboundHandler<Object> {
+
+    @Autowired
+    private CollectedDataService collectedDataService;
+
     /**
      * A thread-safe Set  Using ChannelGroup, you can categorize Channels into a meaningful group.
      * A closed Channel is automatically removed from the collection,
@@ -41,7 +49,7 @@ public class nettyServerHandler extends SimpleChannelInboundHandler<Object> {
             CCYCollectedData collectedValue = (CCYCollectedData) s;
             System.out.println("**************************************");
             if(collectedValue.errorMsg == null){
-                System.out.println(collectedValue);
+                collectedDataService.add(collectedValue);
                 // TODO...
             } else {
                 System.out.println(collectedValue.errorMsg);
