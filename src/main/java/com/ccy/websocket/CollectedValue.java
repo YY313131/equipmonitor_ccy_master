@@ -14,4 +14,12 @@ public class CollectedValue {
      * 参数编号
      */
     public int paramNo;
+
+    @Override
+    public String toString() {
+        return "CollectedValue{" +
+                "value=" + value +
+                ", paramNo=" + paramNo +
+                '}';
+    }
 }

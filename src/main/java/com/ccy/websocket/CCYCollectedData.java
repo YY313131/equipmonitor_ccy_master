@@ -43,7 +43,7 @@ public class CCYCollectedData {
             byteBuf.readBytes(data);
             if (data[0] != 0x68 || data[totalLength - 1] != 0x0D) {
                 errorMsg = "message frame is wrong!";
-            } else if (CRC16(data, 0, totalLength - 3)
+            } else  if(CRC16(data, 0, totalLength - 3)
                     == getInt(data, totalLength - 3, 2)) {
                 StringBuilder stringBuilder = new StringBuilder();
                 stringBuilder.append((char) data[1]);
@@ -52,7 +52,10 @@ public class CCYCollectedData {
                 // stringBuilder.append((char)data[4]);
                 areaNo = stringBuilder.toString();
 
-                collectorNo = getInt(data, 5, 4);
+                collectorNo = data[8] - 0x30;
+                collectorNo |= (data[7] - 0x30) << 8;
+                collectorNo |= (data[6] - 0x30) << 16;
+                collectorNo |= (data[5] - 0x30) << 24;
 
                 int dataLength = getInt(data, 12, 2);
                 int len, index = 14;
@@ -64,6 +67,7 @@ public class CCYCollectedData {
                         CollectedValue collectedValue = new CollectedValue();
                         collectedValue.paramNo = getInt(data, index + 1, 2);
                         collectedValue.value = getFloat(data, index + 5);
+                        collectedValues.add(collectedValue);
                     } else if (dataType == 0x02) {
                         System.out.println(new String(data, index + 2, len - 4));
                     }
@@ -91,14 +95,7 @@ public class CCYCollectedData {
         int endIndex = start + length;
         for (int i = start; i < endIndex; i++) {
             chChar = data[i] & 0xFF;
-
-            // wCRC = wCRCTalbeAbs[(chChar ^ wCRC) & 0x0F] ^ ((wCRC >> 4) & 0xFFFF);
-            int a =  chChar ^ wCRC;
-            int b = a & 0x0F;
-            int c = (wCRC >> 4);
-            int d = c & 0xFFFF;
-            wCRC = wCRCTalbeAbs[b] ^ d;
-
+            wCRC = wCRCTalbeAbs[(chChar ^ wCRC) & 0x0F] ^ ((wCRC >> 4) & 0xFFFF);
             wCRC = wCRCTalbeAbs[(((chChar >> 4) & 0xFF) ^ wCRC) & 0x0F] ^ ((wCRC >> 4) & 0xFFFF);
         }
         wCRC &= 0xFFFF;
@@ -115,21 +112,21 @@ public class CCYCollectedData {
         int value = 0;
         int factor = 1;
         while (length-- > 0) {
-            value += data[start + length] * factor;
-            factor *= 0xFF;
+            value += (data[start + length]& 0xFF) * factor;
+            factor = factor << 8;
         }
         return value;
     }
 
     private float getFloat(byte[] data, int start) {
         int intValue;
-        intValue = data[start];
+        intValue = data[start + 3];
         intValue &= 0xFF;
-        intValue |= ((long) data[start + 1] << 8);
+        intValue |= ((long) data[start + 2] << 8);
         intValue &= 0xFFFF;
         intValue |= ((long) data[start + 1] << 16);
         intValue &= 0xFFFFFF;
-        intValue |= ((long) data[start + 1] << 24);
+        intValue |= ((long) data[start] << 24);
         return Float.intBitsToFloat(intValue);
     }
 

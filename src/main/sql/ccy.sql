@@ -60,7 +60,7 @@ CREATE TABLE `collector` (
 INSERT INTO `collector` VALUES ('1', '1', '1', '正常');
 INSERT INTO `collector` VALUES ('2', '1', '2', '正常');
 INSERT INTO `collector` VALUES ('4', '1', '111111', '正常');
-INSERT INTO `collector` VALUES ('5', '1', '111111', '姝ｅ父');
+INSERT INTO `collector` VALUES ('5', '1', '111111', '异常');
 
 -- ----------------------------
 -- Table structure for collector_parameter
