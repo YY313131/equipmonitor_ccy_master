@@ -81,68 +81,105 @@
 //     }
 // setBound();
 // excuteAjax1();
-$('#container1').highcharts({
-    chart: {
-        type: 'gauge',
-        plotBorderWidth: 1,
-        plotBackgroundColor: {
-            linearGradient: { x1: 0, y1: 0, x2: 0, y2: 1 },
-            stops: [
-                [0, '#FFF4C6'],
-                [0.3, '#FFFFFF'],
-                [1, '#FFF4C6']
-            ]
-        },
-        plotBackgroundImage: null,
-        height: 300
-    },
-    title: {
-        text: 'PH值'
-    },
-    pane: [{
-        startAngle: -45,
-        endAngle: 45,
-        background: null,
-        center: ['50%', '105%'],
-        size: 300
-    }],
-    yAxis: [{
-        min: 0,
-        max: 14,
-        minorTickPosition: 'outside',
-        tickPosition: 'outside',
-        labels: {
-            rotation: 'auto',
-            distance: 20
-        },
-        plotBands: [{
-            from: 8,
-            to: 14,
-            color: '#C02316',
-            innerRadius: '100%',
-            outerRadius: '105%'
-        }],
-        pane: 0,
-        title: {
-            text: 'PH<br/>',
-            y: -40
+function doajax() {
+    $.ajax({
+        url:"../../testAjax",
+        type:"GET",
+        success:function (data) {
+            console.log(data);
         }
-    }],
-    plotOptions: {
-        gauge: {
-            dataLabels: {
-                enabled: false
+    });
+    setTimeout(arguments.callee,2000);
+}
+//doajax();
+$(function () {
+    $('#container1').highcharts({
+            chart: {
+                type: 'gauge',
+                plotBorderWidth: 1,
+                plotBackgroundColor: {
+                    linearGradient: { x1: 0, y1: 0, x2: 0, y2: 1 },
+                    stops: [
+                        [0, '#FFF4C6'],
+                        [0.3, '#FFFFFF'],
+                        [1, '#FFF4C6']
+                    ]
+                },
+                plotBackgroundImage: null,
+                height: 300
             },
-            dial: {
-                radius: '100%'
-            }
+            title: {
+                text: 'PH值'
+            },
+            pane: [{
+                startAngle: -45,
+                endAngle: 45,
+                background: null,
+                center: ['50%', '105%'],
+                size: 300
+            }],
+            yAxis: [{
+                min: 0,
+                max: 14,
+                minorTickPosition: 'outside',
+                tickPosition: 'outside',
+                labels: {
+                    rotation: 'auto',
+                    distance: 20
+                },
+                plotBands: [{
+                    from: 8,
+                    to: 14,
+                    color: '#C02316',
+                    innerRadius: '100%',
+                    outerRadius: '105%'
+                }],
+                pane: 0,
+                title: {
+                    text: 'PH<br/>',
+                    y: -40
+                }
+            }],
+            plotOptions: {
+                gauge: {
+                    dataLabels: {
+                        enabled: false
+                    },
+                    dial: {
+                        radius: '100%'
+                    }
+                }
+            },
+            series: [{
+                data:[4.5],
+                yAxis: 0
+            }]
+        },
+        //1秒请求一次
+        function (chart) {
+
+                setInterval(function () {
+                    if(chart.series){
+                    var value=chart.series[0].points[0];
+                    $.ajax({
+                        url: "../../testAjax",
+                        type: "GET",
+                        // async:"false",
+                        success: function (data) {
+                            //  value=data;
+                            var a=parseFloat(data);
+                            console.log(a);
+                            value.update(a, false);
+                            chart.redraw();
+                        }
+                     })
+                    }
+                },1000);
         }
-    },
-    series: [{
-        data:[4.5],
-        yAxis: 0
-    }]
-});
+    );
+
+})
+
 $('#container2').highcharts({
     chart: {
         type: 'gauge',

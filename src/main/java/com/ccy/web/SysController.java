@@ -7,7 +7,6 @@ import com.ccy.service.CollectedDataService;
 import com.ccy.service.ParameterService;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.apache.ibatis.jdbc.Null;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -118,5 +117,10 @@ public class SysController {
            return "异常";
         }
     }
-
+    @RequestMapping("/testAjax")
+    @ResponseBody
+    public String testAjax(){
+        double i=Math.random()*10;
+        return Double.toString(i);
+    }
 }
