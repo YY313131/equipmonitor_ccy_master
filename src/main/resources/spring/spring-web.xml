@@ -37,7 +37,6 @@
                     <list>
                         <value>login</value>
                         <value>userCheck</value>
-                        <value>mobilelogin</value>
                     </list>
                 </property>
             </bean>

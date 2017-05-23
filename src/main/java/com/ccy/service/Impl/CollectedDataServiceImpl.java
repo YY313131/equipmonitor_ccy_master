@@ -4,8 +4,11 @@ import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 
 import com.ccy.bean.CollectParameter;
+import com.ccy.bean.Parameter;
+import com.ccy.bean.Subsystem;
 import com.ccy.netty.CCYCollectedData;
 import com.ccy.netty.SensorValue;
+import com.ccy.service.SubsystemService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -23,20 +26,25 @@ public class CollectedDataServiceImpl implements CollectedDataService {
 	private CollectorDao collectorDao;
 
 	@Autowired
+	private SubsystemService subsystemService;
+
+	@Autowired
 	private CollectedDataDao collectedDataDao;
+
+	/**
+	 * 缓存最新的采集数据
+	 */
+	private Map<String, CollectedValue> topValues =
+			new ConcurrentHashMap<String, CollectedValue>();
+
 
 	private Map<String, String> tableNames = new ConcurrentHashMap<String, String>(160);
 
 	private Map<Integer, Map<Integer, CollectParameter>> cpsMap
 			= new ConcurrentHashMap<Integer, Map<Integer, CollectParameter>>(8);
 
-	/**
-	 *
-	 * @param collectedData
-	 * @return
-	 */
 	public boolean add(CCYCollectedData collectedData) {
-		if(collectedData == null)
+		if (collectedData == null)
 			throw new NullPointerException("collectedData");
 
 		int collectorId = collectedData.collectorNo;
@@ -46,28 +54,66 @@ public class CollectedDataServiceImpl implements CollectedDataService {
 		List<String> fields = new ArrayList<String>(sValues.size());
 		List<Double> values = new ArrayList<Double>(sValues.size());
 		Map<Integer, CollectParameter> cpMap;
-		if(cpsMap.containsKey(collectorId)){
+		if (cpsMap.containsKey(collectorId)) {
 			cpMap = cpsMap.get(collectorId);
 		} else {
-			cpMap = getMapFromList(collectorDao.getCollectParameters1(collectorId));
-			if(cpMap != null){
+			cpMap = getMapFromList(
+					collectorDao.getCollectParameters1(collectorId));
+			if (cpMap != null) {
 				cpsMap.put(collectorId, cpMap);
 			}
 		}
+
 		CollectParameter cp;
 		StringBuilder stringBuilder = new StringBuilder();
-		for(SensorValue sv : sValues){
+		for (SensorValue sv : sValues) {
 			stringBuilder.append('p');
-			if(cpMap.containsKey(sv.paramNo)){
+			if (cpMap.containsKey(sv.paramNo)) {
+				/** 拼接字段名，并组织提交到到的参数 */
 				cp = cpMap.get(sv.paramNo);
 				stringBuilder.append(cp.getSubsystemId())
 						.append('_').append(cp.getParameterId());
-				values.add((double)sv.value);
+				values.add((double) sv.value);
 				fields.add(stringBuilder.toString());
 			}
+
+			/** 缓存最新数据 */
+			topValues.put(stringBuilder.toString(), new CollectedValue(sv.value));
+
 			stringBuilder.delete(0, stringBuilder.length());
 		}
-		return tableName == null ? false : collectedDataDao.add(tableName, fields, values) > 0;
+		return tableName != null && collectedDataDao.add(tableName, fields, values) > 0;
+	}
+
+
+	public Map<Integer, CollectedValue> getTopOnes(int subsystemId) {
+		Subsystem subsystem = subsystemService.getById(subsystemId);
+		if (subsystem == null) return null;
+
+		Map<Integer, CollectedValue> values =
+				new HashMap<Integer, CollectedValue>(32);
+		for (Parameter p : subsystem.getParameters()) {
+			CollectedValue cv = getTopOne(subsystemId, p.getId());
+			if (cv != null)
+				values.put(p.getId(), cv);
+		}
+		return values;
+	}
+
+	public CollectedValue getTopOne(int subsystemId, int parameterId) {
+		CollectedValue collectedValue;
+		String key = "p" + subsystemId + '_' + parameterId;
+		if (topValues.containsKey(key)) {
+			collectedValue = topValues.get(key);
+		} else {
+			collectedValue = collectedDataDao.getTopOn(
+					getTableName(subsystemId, parameterId), key);
+			if (collectedValue == null) {
+				return null;
+			}
+			topValues.put(key, collectedValue);
+		}
+		return collectedValue;
 	}
 
 	/**

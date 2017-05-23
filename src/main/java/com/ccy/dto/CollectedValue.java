@@ -8,6 +8,20 @@ public class CollectedValue {
 
 	private Date time;
 
+	public CollectedValue() {
+
+	}
+
+	public CollectedValue(double value) {
+		this.value = value;
+		this.time = new Date();
+	}
+
+	public CollectedValue(double value, Date time) {
+		this.value = value;
+		this.time = time;
+	}
+
 	public double getValue() {
 		return value;
 	}

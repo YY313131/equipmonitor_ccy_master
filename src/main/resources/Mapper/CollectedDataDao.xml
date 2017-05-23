@@ -49,4 +49,7 @@
 		WHERE
           id=(SELECT MAX(id) FROM ${tableName});
 	</select>
+	<select id="getTopOn" resultMap="sensorValue">
+		select time, ${fieldName} as value from ${tableName} order by id desc limit 1
+	</select>
 </mapper>

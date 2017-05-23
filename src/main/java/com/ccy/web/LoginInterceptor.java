@@ -35,7 +35,8 @@ public class LoginInterceptor implements HandlerInterceptor{
             return true;
         }
         for (String temp:allowUrl){
-            if (url.endsWith(temp)){
+            if (url.endsWith(temp) || url.contains("mobile")) {
+                System.out.print("拦截器拦截url: " + url);
                 return true;
             }
         }
