@@ -12,15 +12,12 @@ import java.util.List;
  */
 public class LoginInterceptor implements HandlerInterceptor{
     private List<String> allowUrl;
-
     public List<String> getAllowUrl() {
         return allowUrl;
     }
-
     public void setAllowUrl(List<String> allowUrl) {
         this.allowUrl = allowUrl;
     }
-
     /**
      * 在请求之前执行
      * @param httpServletRequest
