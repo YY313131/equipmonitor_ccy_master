@@ -61,4 +61,10 @@ public interface CollectedDataService {
 	 */
 	List<CollectedValue> getBetween(int deviceId, int subsystemId, int parameterId,
 									Date beginTime, Date endTime);
+
+	/**
+	 * 根绝子系统id，参数id，获取参数最新值
+	 * @return
+	 */
+	CollectedValue getCurrentValueById(int subsystemId,int parameterId);
 }

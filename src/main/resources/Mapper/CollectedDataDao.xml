@@ -42,4 +42,11 @@
 		order by time
 	</select>
 
+	<select id="getCurrentValue" resultMap="sensorValue">
+		SELECT ${fieldName} as value,time
+		FROM
+		    ${tableName}
+		WHERE
+          id=(SELECT MAX(id) FROM ${tableName});
+	</select>
 </mapper>

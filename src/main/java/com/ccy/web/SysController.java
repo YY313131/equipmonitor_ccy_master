@@ -117,10 +117,17 @@ public class SysController {
            return "异常";
         }
     }
-    @RequestMapping("/testAjax")
+    @RequestMapping("/getSys1TopValue")
     @ResponseBody
-    public String testAjax(){
-        double i=Math.random()*10;
-        return Double.toString(i);
+    public String testAjax(int subsystemId,int parameterId){
+       CollectedValue cvs=collectedDataService.getCurrentValueById(subsystemId, parameterId);
+        double value=cvs.getValue();
+        String state=checkState(subsystemId,parameterId,value);
+        if(state.equals("正常")){
+            return Double.toString(value)+";"+1;
+        }else{
+            return Double.toString(value)+";"+0;
+        }
+
     }
 }

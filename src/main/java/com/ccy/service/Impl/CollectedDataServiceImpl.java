@@ -30,6 +30,11 @@ public class CollectedDataServiceImpl implements CollectedDataService {
 	private Map<Integer, Map<Integer, CollectParameter>> cpsMap
 			= new ConcurrentHashMap<Integer, Map<Integer, CollectParameter>>(8);
 
+	/**
+	 *
+	 * @param collectedData
+	 * @return
+	 */
 	public boolean add(CCYCollectedData collectedData) {
 		if(collectedData == null)
 			throw new NullPointerException("collectedData");
@@ -65,6 +70,13 @@ public class CollectedDataServiceImpl implements CollectedDataService {
 		return tableName == null ? false : collectedDataDao.add(tableName, fields, values) > 0;
 	}
 
+	/**
+	 *
+	 * @param subsystemId
+	 * @param parameterId
+	 * @param beginTime
+	 * @return
+	 */
 	public List<CollectedValue> getAfter(int subsystemId, int parameterId, Date beginTime) {
 		String tableName = getTableName(subsystemId, parameterId);
 		String fieldName = getFieldName(subsystemId, parameterId);
@@ -80,6 +92,14 @@ public class CollectedDataServiceImpl implements CollectedDataService {
 				: collectedDataDao.getAfter(tableName, fieldName, beginTime);
 	}
 
+	/**
+	 *
+	 * @param subsystemId
+	 * @param parameterId
+	 * @param beginTime
+	 * @param endTime
+	 * @return
+	 */
 	public List<CollectedValue> getBetween(int subsystemId, int parameterId, Date beginTime, Date endTime) {
 		String tableName = getTableName(subsystemId, parameterId);
 		String fieldName = getFieldName(subsystemId, parameterId);
@@ -93,6 +113,19 @@ public class CollectedDataServiceImpl implements CollectedDataService {
 		String fieldName = getFieldName(subsystemId, parameterId);
 		return tableName == null || fieldName == null ? null
 				: collectedDataDao.getBetween(tableName, fieldName, beginTime, endTime);
+	}
+
+	/**
+	 *
+	 * @param subsystemId
+	 * @param parameterId
+	 * @return
+	 */
+	public CollectedValue getCurrentValueById(int subsystemId, int parameterId) {
+		String tableName = getTableName(subsystemId, parameterId);
+		String fieldName = getFieldName(subsystemId, parameterId);
+		return tableName== null || fieldName== null ? null
+				: collectedDataDao.getCurrentValue(tableName,fieldName);
 	}
 
 	private String getTableName(int deviceId) {

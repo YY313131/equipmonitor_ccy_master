@@ -44,4 +44,13 @@ public interface CollectedDataDao {
 	List<CollectedValue> getBetween(@Param("tableName") String tableName,
                                     @Param("fieldName") String fieldName,
                                     @Param("beginTime") Date beginTime, @Param("endTime") Date endTime);
+
+	/**
+	 * 获取某一参数的当前值
+	 * @param tableName
+	 * @param fieldName
+	 * @return
+	 */
+	CollectedValue getCurrentValue(@Param("tableName") String tableName,
+								   @Param("fieldName") String fieldName);
 }
