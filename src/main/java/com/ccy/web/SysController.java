@@ -45,7 +45,7 @@ public class SysController {
      */
     @RequestMapping("/valueListBetweenDate")
     @ResponseBody
-    public List<Double> getPhListBetweenDate(int subsystemId, int parameterId, String beginTime, String endTime) throws ParseException {
+    public List<Double> getListBetweenDate(int subsystemId, int parameterId, String beginTime, String endTime) throws ParseException {
         Date beginTime1=sdf.parse(beginTime);
         Date endTime1=sdf.parse(endTime);
         List<CollectedValue> collectedValues=collectedDataService.getBetween(subsystemId,parameterId,beginTime1,endTime1);
@@ -60,7 +60,7 @@ public class SysController {
     }
     @RequestMapping("/valueListAfterDate")
     @ResponseBody
-    public List<Double> getPhListAfterDate(int subsystemId, int parameterId, String beginTime) throws ParseException {
+    public List<Double> getListAfterDate(int subsystemId, int parameterId, String beginTime) throws ParseException {
         List<CollectedValue> collectedValues=collectedDataService.getAfter(subsystemId,parameterId,
                 sdf.parse(beginTime));
         if (collectedValues==null){
@@ -74,7 +74,7 @@ public class SysController {
     }
     @RequestMapping("/valueTable")
     @ResponseBody
-    public String getPhTable(int subsystemId, int parameterId, String beginTime) throws ParseException, JsonProcessingException {
+    public String getTable(int subsystemId, int parameterId, String beginTime) throws ParseException, JsonProcessingException {
         List<CollectedValueDto> collectedValueDtos=new ArrayList<CollectedValueDto>();
         List<CollectedValue> collectedValues=collectedDataService.getAfter(subsystemId,parameterId,
                 sdf.parse(beginTime));
