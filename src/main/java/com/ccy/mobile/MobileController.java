@@ -85,14 +85,12 @@ public class MobileController {
                 parameterInfo.setParameter(parameter);
             }
             mobileResult=new MobileResult<ParameterInfo>(true,parameterInfo);
-
         }
         return mobileResult;
     }
 
     @RequestMapping(value = "/getHistoryParamterValue", method = RequestMethod.GET)
     @ResponseBody
-
     public MobileResult<HistoryParameterValue> getHistoryParamterValue(
             int subsystemId, int parameterId,String startStamp
                             ,String endStamp,int limt
@@ -109,6 +107,18 @@ public class MobileController {
             mobileResult=new MobileResult<HistoryParameterValue>(true,parameterValue);
         }
         return  mobileResult;
+    }
+
+    @RequestMapping(value = "/getHistoryAbnormalValue", method = RequestMethod.GET)
+    @ResponseBody
+    public MobileResult<HistoryParameterValue> getHistoryAbnormalValue(
+            int subsystemId, int parameterId,String timeStamp
+
+    ) throws ParseException {
+
+
+        //TODO
+        return null;
     }
 
 }
