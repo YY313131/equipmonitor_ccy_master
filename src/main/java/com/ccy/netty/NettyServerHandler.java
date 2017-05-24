@@ -6,6 +6,7 @@ import com.ccy.utils.CRCUtil;
 
 import io.netty.buffer.Unpooled;
 import io.netty.channel.Channel;
+import io.netty.channel.ChannelHandler;
 import io.netty.channel.ChannelHandlerContext;
 
 import io.netty.channel.SimpleChannelInboundHandler;
@@ -18,6 +19,7 @@ import org.springframework.stereotype.Component;
  * Created by caihanbin on 2017/4/29.
  */
 @Component
+@ChannelHandler.Sharable
 public class NettyServerHandler extends SimpleChannelInboundHandler<Object> {
 
     @Autowired
@@ -27,7 +29,8 @@ public class NettyServerHandler extends SimpleChannelInboundHandler<Object> {
      * A thread-safe Set  Using ChannelGroup, you can categorize Channels into a meaningful group.
      * A closed Channel is automatically removed from the collection,
      */
-    public static ChannelGroup channels = new DefaultChannelGroup(GlobalEventExecutor.INSTANCE);
+    public static ChannelGroup channels =
+            new DefaultChannelGroup(GlobalEventExecutor.INSTANCE);
 
     @Override
     public void handlerAdded(ChannelHandlerContext ctx) throws Exception {  // (2)
@@ -42,6 +45,7 @@ public class NettyServerHandler extends SimpleChannelInboundHandler<Object> {
         Channel incoming = ctx.channel();
         channels.writeAndFlush("[SERVER] - " + incoming.remoteAddress() + " 离开\n");
     }
+
     @Override
     protected void channelRead0(ChannelHandlerContext ctx, Object s) throws Exception { // (4)
         if(s instanceof CCYCollectedData) {
@@ -83,20 +87,21 @@ public class NettyServerHandler extends SimpleChannelInboundHandler<Object> {
     @Override
     public void channelActive(ChannelHandlerContext ctx) throws Exception { // (5)
         Channel incoming = ctx.channel();
-        System.out.println("SimpleChatClient:"+incoming.remoteAddress()+"在线");
+        System.out.println("Client:"+incoming.remoteAddress()+"上线");
     }
 
     @Override
     public void channelInactive(ChannelHandlerContext ctx) throws Exception { // (6)
         Channel incoming = ctx.channel();
-        System.out.println("SimpleChatClient:"+incoming.remoteAddress()+"掉线");
+        System.out.println("Client:"+incoming.remoteAddress()+"掉线");
     }
+
     @Override
     public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) {
         Channel incoming = ctx.channel();
-        System.out.println("SimpleChatClient:"+incoming.remoteAddress()+"异常");
+        System.out.println("Client:"+incoming.remoteAddress()+"异常");
         // 当出现异常就关闭连接
-        cause.printStackTrace();
+        //cause.printStackTrace();
         ctx.close();
     }
 }

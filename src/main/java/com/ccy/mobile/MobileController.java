@@ -90,7 +90,7 @@ public class MobileController {
         return mobileResult;
     }
 
-    @RequestMapping(value = "/getParameterInfo", method = RequestMethod.GET)
+    @RequestMapping(value = "/getHistoryParamterValue", method = RequestMethod.GET)
     @ResponseBody
 
     public MobileResult<HistoryParameterValue> getHistoryParamterValue(
