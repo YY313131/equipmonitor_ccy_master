@@ -33,17 +33,7 @@ public class ParameterInfo {
 
     private String suffix;
 
-    public Double getUpper() {
-        return upper;
-    }
 
-    public Double getLower() {
-        return lower;
-    }
-
-    public String getSuffix() {
-        return suffix;
-    }
 
     /**
      * 当前值
@@ -113,7 +103,17 @@ public class ParameterInfo {
     public String getParameterName() {
         return parameterName;
     }
+    public Double getUpper() {
+        return upper;
+    }
 
+    public Double getLower() {
+        return lower;
+    }
+
+    public String getSuffix() {
+        return suffix;
+    }
     @Override
     public String toString() {
         return "ParameterInfo{" +

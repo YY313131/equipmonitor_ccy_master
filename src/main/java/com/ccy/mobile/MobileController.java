@@ -2,10 +2,7 @@ package com.ccy.mobile;
 
 import com.ccy.bean.Parameter;
 import com.ccy.dto.CollectedValue;
-import com.ccy.mobile.bean.MobileResult;
-import com.ccy.mobile.bean.ParameterInfo;
-import com.ccy.mobile.bean.SubsystemInfo;
-import com.ccy.mobile.bean.UserInfo;
+import com.ccy.mobile.bean.*;
 import com.ccy.service.CollectedDataService;
 import com.ccy.service.ParameterService;
 import com.ccy.service.UserService;
@@ -19,6 +16,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.List;
 import java.util.Map;
 
@@ -38,7 +38,7 @@ public class MobileController {
     @Autowired
     private ParameterService parameterService;
 
-
+    private DateFormat sdf = new SimpleDateFormat("yyyy/MM/dd HH:mm");
 
     @RequestMapping(value = "/login", method = RequestMethod.POST)
     @ResponseBody
@@ -88,6 +88,27 @@ public class MobileController {
 
         }
         return mobileResult;
+    }
+
+    @RequestMapping(value = "/getParameterInfo", method = RequestMethod.GET)
+    @ResponseBody
+
+    public MobileResult<HistoryParameterValue> getHistoryParamterValue(
+            int subsystemId, int parameterId,String startStamp
+                            ,String endStamp,int limt
+       ) throws ParseException {
+        MobileResult<HistoryParameterValue> mobileResult;
+        List<CollectedValue>collectedValues=collectedDataService.getBetween(subsystemId,parameterId,sdf.parse(startStamp)
+        ,sdf.parse(endStamp)
+        );
+
+        if (collectedValues==null||collectedValues.size()<=0){
+            mobileResult=new MobileResult<HistoryParameterValue>(false,"getHistoryParamterValue fail");
+        }else {
+            HistoryParameterValue parameterValue=new HistoryParameterValue(parameterId,collectedValues);
+            mobileResult=new MobileResult<HistoryParameterValue>(true,parameterValue);
+        }
+        return  mobileResult;
     }
 
 }
