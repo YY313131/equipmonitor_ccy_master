@@ -2,6 +2,7 @@ package com.ccy.service;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 import com.ccy.dto.CollectedValue;
 import com.ccy.netty.CCYCollectedData;
@@ -15,6 +16,26 @@ public interface CollectedDataService {
 	 * @return true，数据添加成功；false，数据添加失败
 	 */
 	boolean add(CCYCollectedData collectedData);
+
+
+	/**
+	 * 获取某个子系统下的所有参数的最新数据
+	 *
+	 * @param subsystemId
+	 * @return
+	 */
+	Map<Integer, CollectedValue> getTopOnes(int subsystemId);
+
+
+	/**
+	 * 获取指定子系统下某个参数的最新值
+	 *
+	 * @param subsystemId
+	 * @param parameterId
+	 * @return
+	 */
+	CollectedValue getTopOne(int subsystemId, int parameterId);
+
 
 	/**
 	 * 获取指定数据表里指定字段在某个时间之后的所有数据

@@ -20,7 +20,7 @@ public class NettyServerStart {
     public NettyServerStart(final NettyServer nettyServer) {
         System.out.println("------------Spring自动加载 ---------");
         System.out.println("------------启动Netty服务 ---------");
-        nettyServer.setServerPort(8888);
+        nettyServer.setServerPort(7095);
         ExecutorService executorService= Executors.newCachedThreadPool();
         executorService.execute(nettyServer);
     }

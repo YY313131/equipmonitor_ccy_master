@@ -73,4 +73,14 @@ public interface CollectedDataDao {
                                         @Param("fieldName") String fieldName,
                                         @Param("date")String date,
                                         @Param("timestamp")int timestamp);
+
+	/**
+	 * 获取指定子系统下面某个参数的最新值
+	 *
+	 * @param tableName
+	 * @param fieldName
+	 * @return
+	 */
+	CollectedValue getTopOn(@Param("tableName") String tableName,
+							@Param("fieldName") String fieldName);
 }

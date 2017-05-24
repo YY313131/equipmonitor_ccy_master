@@ -108,7 +108,7 @@ public class SysController {
 
     @RequestMapping("/valueTable")
     @ResponseBody
-    public String getPhTable(int subsystemId, int parameterId, String beginTime) throws ParseException, JsonProcessingException {
+    public String getTable(int subsystemId, int parameterId, String beginTime) throws ParseException, JsonProcessingException {
         List<CollectedValueDto> collectedValueDtos=new ArrayList<CollectedValueDto>();
         List<CollectedValue> collectedValues=collectedDataService.getAfter(subsystemId,parameterId,
                 sdf.parse(beginTime));
