@@ -1,10 +1,10 @@
 package com.ccy.mobile.bean;
 
+import com.ccy.bean.Parameter;
 import com.ccy.bean.ParameterStatus;
 import com.ccy.dto.CollectedValue;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 /**
  * Created by dsz on 17/5/23.
@@ -19,12 +19,18 @@ public class SubsystemInfo {
     /**
      * 设备信息列表
      */
-    private Map<Integer, ParameterInfo> parameterInfos;
+
+    private List<ParameterInfo> parameterInfos;
+
+    public SubsystemInfo(int subsystemId, Map<Integer,
+                            CollectedValue> cvMap,
+                         Map<Integer, ParameterStatus> psMap,
+                         List<Parameter>pnList
 
 
-    public SubsystemInfo(int subsystemId, Map<Integer, CollectedValue> cvMap) {
+    ) {
         this.subsystemId = subsystemId;
-        setParameterValues(cvMap);
+        setParameterValues(cvMap,psMap,pnList);
     }
 
     public int getSubsystemId() {
@@ -35,48 +41,56 @@ public class SubsystemInfo {
         this.subsystemId = subsystemId;
     }
 
-    public Map<Integer, ParameterInfo> getParameterInfos() {
+
+
+    public List<ParameterInfo> getParameterInfos() {
         return parameterInfos;
     }
 
-    public void setParameterValues(Map<Integer, CollectedValue> cvMap) {
-        if (cvMap == null)
-            throw new NullPointerException("cvMap");
+    public void setParameterValues(Map<Integer, CollectedValue> cvMap,
+                                   Map<Integer, ParameterStatus> psMap,
+                                    List<Parameter> pnList
+    ) {
 
-        if (parameterInfos == null)
-            parameterInfos = new HashMap<Integer, ParameterInfo>(32);
-
-        for (Map.Entry<Integer, CollectedValue> entry : cvMap.entrySet()) {
-            ParameterInfo parameterInfo;
-            if (parameterInfos.containsKey(entry.getKey())) {
-                parameterInfo = parameterInfos.get(entry.getKey());
-            } else {
-                parameterInfo = new ParameterInfo();
-                parameterInfos.put(entry.getKey(), parameterInfo);
+        Map<Integer, ParameterInfo> pMap = new HashMap<Integer, ParameterInfo>(32);
+        if (cvMap != null) {
+            for (Map.Entry<Integer, CollectedValue> entry : cvMap.entrySet()) {
+                ParameterInfo parameterInfo;
+                if (pMap.containsKey(entry.getKey())) {
+                    parameterInfo = pMap.get(entry.getKey());
+                } else {
+                    parameterInfo = new ParameterInfo();
+                    pMap.put(entry.getKey(), parameterInfo);
+                }
+                parameterInfo.setParameterId(entry.getKey());
+                parameterInfo.setCollectedValue(entry.getValue());
             }
-            parameterInfo.setParameterId(entry.getKey());
-            parameterInfo.setCollectedValue(entry.getValue());
-        }
-    }
-
-    public void setParameterStatus(Map<Integer, ParameterStatus> psMap) {
-        if (psMap == null)
-            throw new NullPointerException("psMap");
-
-        if (parameterInfos == null)
-            parameterInfos = new HashMap<Integer, ParameterInfo>(32);
-
-        for (Map.Entry<Integer, ParameterStatus> entry : psMap.entrySet()) {
-            ParameterInfo parameterInfo;
-            if (parameterInfos.containsKey(entry.getKey())) {
-                parameterInfo = parameterInfos.get(entry.getKey());
-            } else {
-                parameterInfo = new ParameterInfo();
-                parameterInfos.put(entry.getKey(), parameterInfo);
-            }
-            parameterInfo.setParameterId(entry.getKey());
-            parameterInfo.setParameterStatus(entry.getValue());
         }
 
+        if (psMap != null) {
+            for (Map.Entry<Integer, ParameterStatus> entry : psMap.entrySet()) {
+                ParameterInfo parameterInfo;
+                if (pMap.containsKey(entry.getKey())) {
+                    parameterInfo = pMap.get(entry.getKey());
+                } else {
+                    parameterInfo = new ParameterInfo();
+                    pMap.put(entry.getKey(), parameterInfo);
+                }
+                parameterInfo.setParameterId(entry.getKey());
+                parameterInfo.setParameterStatus(entry.getValue());
+
+            }
+        }
+
+        if(pnList!=null){
+            for(Parameter parameter:pnList){
+                if(pMap.containsKey(parameter.getId())){
+                    ParameterInfo parameterInfo=pMap.get(parameter.getId());
+                    parameterInfo.setParameter(parameter);
+                }
+            }
+        }
+        parameterInfos=new ArrayList<ParameterInfo>(pMap.values());
     }
+
 }

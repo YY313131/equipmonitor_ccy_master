@@ -1,5 +1,6 @@
 package com.ccy.mobile.bean;
 
+import com.ccy.bean.Parameter;
 import com.ccy.bean.ParameterStatus;
 import com.ccy.dto.CollectedValue;
 
@@ -15,6 +16,35 @@ public class ParameterInfo {
      */
     private int parameterId;
 
+
+
+    /**
+     * 参数名称
+     */
+    private String parameterName;
+
+
+    private Double upper;
+
+    private Double lower;
+    /**
+     * 单位
+     */
+
+    private String suffix;
+
+    public Double getUpper() {
+        return upper;
+    }
+
+    public Double getLower() {
+        return lower;
+    }
+
+    public String getSuffix() {
+        return suffix;
+    }
+
     /**
      * 当前值
      */
@@ -25,10 +55,6 @@ public class ParameterInfo {
      */
     private Date currentTime;
 
-    /**
-     * 当前测量状态
-     */
-    private int measureStatus;
 
     /**
      * 当前检测状态
@@ -61,9 +87,15 @@ public class ParameterInfo {
         this.currentValue = cv.getValue();
     }
 
-    public int getMeasureStatus() {
-        return measureStatus;
+    public void setParameter(Parameter parameter){
+        this.parameterName=parameter.getParameterName();
+        this.upper=parameter.getUpper();
+        this.lower=parameter.getLower();
+        this.suffix=parameter.getSuffix();
     }
+
+
+
 
     public int getDetectStatus() {
         return detectStatus;
@@ -77,16 +109,21 @@ public class ParameterInfo {
     public void setParameterStatus(ParameterStatus ps) {
         this.detectStatus = ps.detectStatus;
         this.deviceStatus = ps.deviceStatus;
-        this.measureStatus = ps.measureStatus;
+    }
+    public String getParameterName() {
+        return parameterName;
     }
 
     @Override
     public String toString() {
         return "ParameterInfo{" +
                 "parameterId=" + parameterId +
+                ", parameterName='" + parameterName + '\'' +
+                ", upper=" + upper +
+                ", lower=" + lower +
+                ", suffix='" + suffix + '\'' +
                 ", currentValue=" + currentValue +
                 ", currentTime=" + currentTime +
-                ", measureStatus=" + measureStatus +
                 ", detectStatus=" + detectStatus +
                 ", deviceStatus=" + deviceStatus +
                 '}';

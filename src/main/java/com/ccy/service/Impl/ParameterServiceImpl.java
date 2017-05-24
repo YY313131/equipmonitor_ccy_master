@@ -2,6 +2,8 @@ package com.ccy.service.Impl;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 import com.ccy.bean.Parameter;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,8 +15,9 @@ import com.ccy.service.ParameterService;
 @Service
 public class ParameterServiceImpl implements ParameterService {
 
-	private List<Parameter> parameters=new ArrayList<Parameter>(16);
+//	private List<Parameter> parameters=new ArrayList<Parameter>(16);
 
+	private Map<Integer,Parameter>parameterMap=new ConcurrentHashMap<Integer, Parameter>(16);
 	@Autowired
 	private ParameterDao parameterDao;
 
@@ -42,10 +45,11 @@ public class ParameterServiceImpl implements ParameterService {
 	public Parameter getById(int id) {
 		if (id <= 0)
 			throw new IllegalArgumentException("id<=0");
-        Parameter parameter = parameters.get(id);
+		Parameter parameter= parameterMap.get(id);
+
         if(parameter == null){
             parameter = parameterDao.getById(id);
-            parameters.add(id, parameter);
+			parameterMap.put(id, parameter);
         }
 		return parameter;
 	}
