@@ -97,8 +97,8 @@ public class ParameterInfo {
     }
 
     public void setParameterStatus(ParameterStatus ps) {
-        this.detectStatus = ps.detectStatus;
-        this.deviceStatus = ps.deviceStatus;
+        this.detectStatus = ps.getDetectStatus();
+        this.deviceStatus = ps.getDeviceStatus();
     }
     public String getParameterName() {
         return parameterName;

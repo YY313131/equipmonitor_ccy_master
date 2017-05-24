@@ -84,8 +84,21 @@ public interface CollectedDataService {
 									Date beginTime, Date endTime);
 
 	/**
-	 * 根绝子系统id，参数id，获取参数最新值
+	 * 根据子系统id，参数id，获取参数最新值
 	 * @return
 	 */
 	CollectedValue getCurrentValueById(int subsystemId,int parameterId);
+
+	/**
+	 * 获得哪一天的所有参数值
+	 * @param subsystemId
+	 * @param parameterId
+	 * @param dayStamp 哪一天的时间戳
+	 * @return
+	 */
+
+	List<CollectedValue> getDayValueById(int subsystemId,int parameterId ,long dayStamp);
+
+
+
 }

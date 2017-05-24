@@ -174,6 +174,21 @@ public class CollectedDataServiceImpl implements CollectedDataService {
 				: collectedDataDao.getCurrentValue(tableName,fieldName);
 	}
 
+	public List<CollectedValue> getDayValueById(int subsystemId, int parameterId, long dayStamp) {
+		List<CollectedValue> collectedValues=new ArrayList<CollectedValue>();
+		for(int i=0;i<10;i++){
+			CollectedValue collectedValue=new CollectedValue();
+			collectedValue.setTime(new Date());
+			collectedValue.setValue(Math.random());
+			collectedValues.add(collectedValue);
+		}
+
+
+		return collectedValues;
+	}
+
+
+
 	private String getTableName(int deviceId) {
 		return DataTableNamePrefix + deviceId;
 	}

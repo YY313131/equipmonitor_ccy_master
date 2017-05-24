@@ -1,10 +1,12 @@
 package com.ccy.mobile;
 
 import com.ccy.bean.Parameter;
+import com.ccy.bean.ParameterStatus;
 import com.ccy.dto.CollectedValue;
 import com.ccy.mobile.bean.*;
 import com.ccy.service.CollectedDataService;
 import com.ccy.service.ParameterService;
+import com.ccy.service.StatusService;
 import com.ccy.service.UserService;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -37,8 +39,10 @@ public class MobileController {
 
     @Autowired
     private ParameterService parameterService;
+  @Autowired
+    private StatusService statusService;
 
-    private DateFormat sdf = new SimpleDateFormat("yyyy/MM/dd HH:mm");
+
 
     @RequestMapping(value = "/login", method = RequestMethod.POST)
     @ResponseBody
@@ -62,6 +66,8 @@ public class MobileController {
                 collectedDataService.getTopOnes(subsystemId);
         //参数的固有属性 上下限 名称等信息
         List<Parameter>pnlist=parameterService.getBySubsystemId(subsystemId);
+
+        //TODO 现在没有参数状态需要后期加入
 
         SubsystemInfo subsystemInfo = new SubsystemInfo(subsystemId,cmap,null,pnlist);
 
@@ -92,33 +98,41 @@ public class MobileController {
     @RequestMapping(value = "/getHistoryParamterValue", method = RequestMethod.GET)
     @ResponseBody
     public MobileResult<HistoryParameterValue> getHistoryParamterValue(
-            int subsystemId, int parameterId,String startStamp
-                            ,String endStamp,int limt
-       ) throws ParseException {
+            int subsystemId, int parameterId,long timeStamp
+       ) {
+        logger.info("getHistoryParamterValue");
         MobileResult<HistoryParameterValue> mobileResult;
-        List<CollectedValue>collectedValues=collectedDataService.getBetween(subsystemId,parameterId,sdf.parse(startStamp)
-        ,sdf.parse(endStamp)
-        );
-
-        if (collectedValues==null||collectedValues.size()<=0){
-            mobileResult=new MobileResult<HistoryParameterValue>(false,"getHistoryParamterValue fail");
+       List<CollectedValue>collectedValues= collectedDataService.getDayValueById(subsystemId,parameterId,timeStamp);
+        if(collectedValues==null){
+            mobileResult=new MobileResult<HistoryParameterValue>(false,"acquire data fail");
         }else {
-            HistoryParameterValue parameterValue=new HistoryParameterValue(parameterId,collectedValues);
-            mobileResult=new MobileResult<HistoryParameterValue>(true,parameterValue);
+
+            HistoryParameterValue hisPv=new HistoryParameterValue(parameterId,collectedValues);
+            mobileResult=new MobileResult<HistoryParameterValue>(true,hisPv);
         }
-        return  mobileResult;
+        return mobileResult;
+
     }
 
     @RequestMapping(value = "/getHistoryAbnormalValue", method = RequestMethod.GET)
     @ResponseBody
-    public MobileResult<HistoryParameterValue> getHistoryAbnormalValue(
-            int subsystemId, int parameterId,String timeStamp
+    public MobileResult<HistoryAbnormalValue> getHistoryAbnormalValue(
+            int subsystemId, int parameterId,long timeStamp
 
-    ) throws ParseException {
+    )  {
 
+        MobileResult<HistoryAbnormalValue> mobileResult;
+
+        List<ParameterStatus> abnoramls=statusService.getDayAnnormalStatus(subsystemId,parameterId,timeStamp);
+        if(abnoramls==null){
+            mobileResult=new MobileResult<HistoryAbnormalValue>(false,"acquire data fail");
+        }else{
+            HistoryAbnormalValue abnormalStatus=new HistoryAbnormalValue(parameterId,abnoramls);
+            mobileResult=new MobileResult<HistoryAbnormalValue>(true,abnormalStatus);
+        }
 
         //TODO
-        return null;
+        return mobileResult;
     }
 
 }
