@@ -53,4 +53,24 @@ public interface CollectedDataDao {
 	 */
 	CollectedValue getCurrentValue(@Param("tableName") String tableName,
 								   @Param("fieldName") String fieldName);
+
+	/**
+	 * 获取默认条数数据条数据
+	 * @return
+	 */
+	List<CollectedValue> getDefaultValue(@Param("tableName") String tableName,
+										 @Param("fieldName") String fieldName,
+                                         @Param("offset")int offset);
+
+    /**
+     * 获取某一天的值
+     * @param tableName
+     * @param fieldName
+     * @param date
+     * @return
+     */
+	List<CollectedValue> getOneDayValue(@Param("tableName") String tableName,
+                                        @Param("fieldName") String fieldName,
+                                        @Param("date")String date,
+                                        @Param("timestamp")int timestamp);
 }

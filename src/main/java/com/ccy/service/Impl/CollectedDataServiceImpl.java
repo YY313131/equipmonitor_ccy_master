@@ -1,5 +1,6 @@
 package com.ccy.service.Impl;
 
+import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -128,7 +129,38 @@ public class CollectedDataServiceImpl implements CollectedDataService {
 				: collectedDataDao.getCurrentValue(tableName,fieldName);
 	}
 
-	private String getTableName(int deviceId) {
+	/**
+	 *
+	 * @param subsystemId
+	 * @param parameterId
+     * @param offset
+	 * @return
+	 */
+	public List<CollectedValue> getDefaultValueList(int subsystemId, int parameterId,int offset) {
+		String tableName = getTableName(subsystemId, parameterId);
+		String fieldName = getFieldName(subsystemId, parameterId);
+		return tableName== null || fieldName== null ? null
+				: collectedDataDao.getDefaultValue(tableName,fieldName,offset);
+	}
+
+    /**
+     *
+     * @param subsystemId
+     * @param parameterId
+     * @param date
+     * @param timestamp
+     * @return
+     */
+    public List<CollectedValue> getDayValueList(int subsystemId, int parameterId, Date date, int timestamp) {
+        SimpleDateFormat sdf=new SimpleDateFormat("yyyy-MM-dd");
+        String date1=sdf.format(date);
+        String tableName = getTableName(subsystemId, parameterId);
+        String fieldName = getFieldName(subsystemId, parameterId);
+        return tableName== null || fieldName== null ? null
+                : collectedDataDao.getOneDayValue(tableName,fieldName,date1,timestamp);
+    }
+
+    private String getTableName(int deviceId) {
 		return DataTableNamePrefix + deviceId;
 	}
 

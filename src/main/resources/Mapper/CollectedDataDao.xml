@@ -7,7 +7,7 @@
 
 	<resultMap type="com.ccy.dto.CollectedValue" id="sensorValue">
 		<result column="value" jdbcType="INTEGER" property="value" />
-		<result column="collectedTime" jdbcType="DATE" property="collectedTime" />	
+		<result column="time" jdbcType="DATE" property="time" />
 	</resultMap>
 
 	<insert id="add">
@@ -49,4 +49,19 @@
 		WHERE
           id=(SELECT MAX(id) FROM ${tableName});
 	</select>
+
+    <select id="getDefaultValue" resultMap="sensorValue">
+      select * from (
+        select ${fieldName} as value,time
+		    from
+			    ${tableName}
+		    order by time desc limit ${offset}
+          ) as a ORDER by a.time ASC;
+    </select>
+    <select id="getOneDayValue" resultMap="sensorValue">
+          select  ${fieldName} as value,time
+		    from
+			    ${tableName}
+			WHERE  DATE(time)=#{date} AND time%${timestamp}=0;
+    </select>
 </mapper>

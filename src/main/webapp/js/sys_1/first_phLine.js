@@ -12,9 +12,9 @@ window.onload=function () {
                 beginTime:$("#startTime").val(),
                 endTime:$("#endTime").val()};
         }else {
-            url="../../valueListAfterDate";
+            url="../../getOneDayValue";
             data1={subsystemId:1,parameterId:1,
-                beginTime:$("#startTime").val()};
+                time:$("#startTime").val()};
         }
         $.ajax({
             url:url,
@@ -28,8 +28,8 @@ window.onload=function () {
         })
     })
     $.ajax({
-        url:"../../valueListAfterDate",
-        data:{subsystemId:1,parameterId:1,beginTime:$("#startTime").val()},
+        url:"../../defaultValueList",
+        data:{subsystemId:1,parameterId:1},
         type:"GET",
         success:function (data) {
           //  alert(data);

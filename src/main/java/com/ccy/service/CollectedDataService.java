@@ -63,8 +63,24 @@ public interface CollectedDataService {
 									Date beginTime, Date endTime);
 
 	/**
-	 * 根绝子系统id，参数id，获取参数最新值
+	 * 根据子系统id，参数id，获取参数最新值
 	 * @return
 	 */
 	CollectedValue getCurrentValueById(int subsystemId,int parameterId);
+
+	/**
+	 * 获取参数列表
+	 * @return
+	 */
+	List<CollectedValue> getDefaultValueList(int subsystemId,int parameterId,int offset);
+
+    /**
+     * 获取某一天的参数值
+     * @param subsystemId
+     * @param parameterId
+     * @param date
+     * @param timestamp 时间间隔
+     * @return
+     */
+	List<CollectedValue> getDayValueList(int subsystemId,int parameterId,Date date,int timestamp);
 }
