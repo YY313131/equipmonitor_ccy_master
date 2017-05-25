@@ -61,7 +61,7 @@ public class MobileController {
     @RequestMapping(value = "/getSubsystemInfo", method = RequestMethod.GET)
     @ResponseBody
     public MobileResult<SubsystemInfo> getSubsystemInfo(int subsystemId) {
-        String json = null;
+
         Map<Integer, CollectedValue> cmap =
                 collectedDataService.getTopOnes(subsystemId);
         //参数的固有属性 上下限 名称等信息
