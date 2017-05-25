@@ -104,4 +104,25 @@ public interface CollectedDataService {
      * @return
      */
 	List<CollectedValue> getDayValueList(int subsystemId,int parameterId,Date date,int timestamp);
+
+
+    /**
+     * 前端table分页
+     * @param subsystemId
+     * @param parameterId
+     * @param date
+     * @param pageNumber
+     * @param pageSize
+     * @return
+     */
+    List<CollectedValue> getPaginationList(int subsystemId,int parameterId,Date date,int pageNumber,int pageSize);
+
+    /**
+     * 返回查询结果条数
+     * @param subsystemId
+     * @param parameterId
+     * @param date
+     * @return
+     */
+    int getValueCount(int subsystemId,int parameterId,Date date);
 }

@@ -3,6 +3,7 @@ package com.ccy.web;
 import com.ccy.bean.Parameter;
 import com.ccy.dto.CollectedValue;
 import com.ccy.dto.CollectedValueDto;
+import com.ccy.dto.TableValueDto;
 import com.ccy.service.CollectedDataService;
 import com.ccy.service.ParameterService;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -108,10 +109,13 @@ public class SysController {
 
     @RequestMapping("/valueTable")
     @ResponseBody
-    public String getTable(int subsystemId, int parameterId, String beginTime) throws ParseException, JsonProcessingException {
+    public String getTable(int pageNumber,int pageSize,int subsystemId, int parameterId, String beginTime) throws ParseException, JsonProcessingException {
+//        List<CollectedValueDto> collectedValueDtos=new ArrayList<CollectedValueDto>();
+//        List<CollectedValue> collectedValues=collectedDataService.getAfter(subsystemId,parameterId,
+//                sdf.parse(beginTime));
+        System.out.println(pageNumber+":"+pageSize+";"+subsystemId+";"+parameterId+";"+beginTime);
         List<CollectedValueDto> collectedValueDtos=new ArrayList<CollectedValueDto>();
-        List<CollectedValue> collectedValues=collectedDataService.getAfter(subsystemId,parameterId,
-                sdf.parse(beginTime));
+        List<CollectedValue> collectedValues=collectedDataService.getPaginationList(subsystemId,parameterId,sdf.parse(beginTime),pageNumber,pageSize);
         if (collectedValues==null){
             return null;
         }
@@ -123,9 +127,25 @@ public class SysController {
             collectedValueDto.setState(checkState(subsystemId,parameterId,collectedValue.getValue()));
             collectedValueDtos.add(collectedValueDto);
         }
-        String jsonList=mapper.writeValueAsString(collectedValueDtos);
+        TableValueDto t=new TableValueDto();
+        t.setTotal(collectedDataService.getValueCount(subsystemId,parameterId,sdf.parse(beginTime)));
+        t.setRows(collectedValueDtos);
+        String jsonList=mapper.writeValueAsString(t);
+
+        //System.out.println("分页"+limit+";"+offset);
         System.out.println(jsonList);
         return jsonList;
+    }
+    @RequestMapping("/valueTable1")
+    @ResponseBody
+    public String getTable1(int pageNumber,int pageSize,int subsystemId, int parameterId, String beginTime) throws ParseException {
+        System.out.println(pageNumber+":"+pageSize+";"+subsystemId+";"+parameterId+";"+beginTime);
+        List<CollectedValueDto> collectedValueDtos1=new ArrayList<CollectedValueDto>();
+        List<CollectedValue> collectedValues=collectedDataService.getPaginationList(subsystemId,parameterId,sdf.parse(beginTime),pageNumber,pageSize);
+        if (collectedValues==null){
+            return null;
+        }
+        return null;
     }
     /**
      * 参数值状态监测,查询表中上下限

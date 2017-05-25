@@ -6,7 +6,7 @@ window.onload=function () {
     $("#select").click(function () {
         var url;
         var data1={};
-        if(($("#startTime").val())!=$("#endTime").val()){
+        if($("#endTime").val()!=""&&($("#startTime").val()!=$("#endTime").val())){
             url="../../valueListBetweenDate";
             data1={subsystemId:1,parameterId:3,
                 beginTime:$("#startTime").val(),
@@ -93,12 +93,12 @@ $(function(){
         disabledDates: ['1986/01/08', '1986/01/09', '1986/01/10'],
         startDate: '2015/11/01'
     });
-    $('#startTime').datetimepicker({ value: '2015/11/02 ', step: 10 });
+    $('#startTime').datetimepicker({ value: '2017/05/24 ', step: 10 });
     $('#endTime').datetimepicker({
         dayOfWeekStart: 1,
         lang: 'CN',
         disabledDates: ['1986/01/08', '1986/01/09', '1986/01/10'],
         startDate: '2015/11/01'
     });
-    $('#endTime').datetimepicker({ value: '2015/11/02 ', step: 10 });
+    // $('#endTime').datetimepicker({ value: '2015/11/02 ', step: 10 });
 });

@@ -58,13 +58,30 @@
 		    order by time desc limit ${offset}
           ) as a ORDER by a.time ASC;
     </select>
+
     <select id="getOneDayValue" resultMap="sensorValue">
           select  ${fieldName} as value,time
 		    from
 			    ${tableName}
 			WHERE  DATE(time)=#{date} AND time%${timestamp}=0;
     </select>
+
 	<select id="getTopOn" resultMap="sensorValue">
 		select time, ${fieldName} as value from ${tableName} order by id desc limit 1
+	</select>
+
+	<select id="getPaginationList" resultMap="sensorValue">
+		select ${fieldName} as value,time
+		from
+			${tableName}
+		where
+			time>=#{beginTime}
+		order by time limit ${pageNumber},${pageSize}
+	</select>
+	<select id="getCount" resultType="java.lang.Integer">
+		select COUNT(*) from
+			${tableName}
+		where
+			time>=#{beginTime}
 	</select>
 </mapper>

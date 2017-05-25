@@ -83,4 +83,28 @@ public interface CollectedDataDao {
 	 */
 	CollectedValue getTopOn(@Param("tableName") String tableName,
 							@Param("fieldName") String fieldName);
+
+	/**
+	 *分页
+	 * @param tableName
+	 * @param fieldName
+	 * @param pageSize
+	 * @param pageNumber
+	 * @return
+	 */
+	List<CollectedValue> getPaginationList( @Param("tableName") String tableName,
+											@Param("fieldName") String fieldName,
+                                            @Param("beginTime") Date beginTime,
+                                            @Param("pageNumber")int pageNumber,
+											@Param("pageSize") int pageSize
+											);
+
+    /**
+     * 返回数据条数
+     * @param tableName
+     * @param beginTime
+     * @return
+     */
+	int getCount(@Param("tableName") String tableName,
+                 @Param("beginTime") Date beginTime);
 }

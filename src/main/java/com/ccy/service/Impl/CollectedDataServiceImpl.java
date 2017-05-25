@@ -206,7 +206,36 @@ public class CollectedDataServiceImpl implements CollectedDataService {
                 : collectedDataDao.getOneDayValue(tableName,fieldName,date1,timestamp);
     }
 
-    private String getTableName(int deviceId) {
+	/**
+	 * 分页实现
+	 * @param subsystemId
+	 * @param parameterId
+	 * @param date
+	 * @param pageNumber
+	 * @param pageSize
+	 * @return
+	 */
+	public List<CollectedValue> getPaginationList(int subsystemId, int parameterId, Date date, int pageNumber, int pageSize) {
+		String tableName = getTableName(subsystemId, parameterId);
+		String fieldName = getFieldName(subsystemId, parameterId);
+		return tableName== null || fieldName== null ? null
+				: collectedDataDao.getPaginationList(tableName,fieldName,date,(pageNumber-1)*pageSize,pageSize);
+	}
+
+	/**
+	 * 查询结果条数
+	 * @param subsystemId
+	 * @param parameterId
+	 * @param date
+	 * @return
+	 */
+	public int getValueCount(int subsystemId, int parameterId, Date date) {
+		String tableName = getTableName(subsystemId, parameterId);
+		return tableName==null?0:collectedDataDao.getCount(tableName,date);
+
+	}
+
+	private String getTableName(int deviceId) {
 		return DataTableNamePrefix + deviceId;
 	}
 
