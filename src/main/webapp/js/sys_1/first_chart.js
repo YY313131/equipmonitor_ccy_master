@@ -110,7 +110,7 @@ $(function () {
             }],
             yAxis: [{
                 min: 0,
-                max: 14,
+                max: 20,
                 minorTickPosition: 'outside',
                 tickPosition: 'outside',
                 labels: {
@@ -118,8 +118,8 @@ $(function () {
                     distance: 20
                 },
                 plotBands: [{
-                    from: 8,
-                    to: 14,
+                    from: 14,
+                    to: 20,
                     color: '#C02316',
                     innerRadius: '100%',
                     outerRadius: '105%'
