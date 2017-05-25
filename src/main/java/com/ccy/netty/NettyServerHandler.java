@@ -63,6 +63,7 @@ public class NettyServerHandler extends SimpleChannelInboundHandler<Object> {
                 responseSensorCollector(ctx, collectedValue);
             } else {
                 System.out.println(collectedValue.errorMsg);
+
             }
             // TODO...
         }
