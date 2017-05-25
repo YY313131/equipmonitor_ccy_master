@@ -16,24 +16,19 @@ public class ParameterInfo {
      */
     private int parameterId;
 
-
-
     /**
      * 参数名称
      */
     private String parameterName;
 
-
     private Double upper;
 
     private Double lower;
+
     /**
      * 单位
      */
-
     private String suffix;
-
-
 
     /**
      * 当前值
@@ -44,7 +39,6 @@ public class ParameterInfo {
      * 当前值的采集时间
      */
     private Date currentTime;
-
 
     /**
      * 当前检测状态
@@ -84,13 +78,9 @@ public class ParameterInfo {
         this.suffix=parameter.getSuffix();
     }
 
-
-
-
     public int getDetectStatus() {
         return detectStatus;
     }
-
 
     public int getDeviceStatus() {
         return deviceStatus;
@@ -103,6 +93,7 @@ public class ParameterInfo {
     public String getParameterName() {
         return parameterName;
     }
+
     public Double getUpper() {
         return upper;
     }
@@ -114,6 +105,7 @@ public class ParameterInfo {
     public String getSuffix() {
         return suffix;
     }
+
     @Override
     public String toString() {
         return "ParameterInfo{" +

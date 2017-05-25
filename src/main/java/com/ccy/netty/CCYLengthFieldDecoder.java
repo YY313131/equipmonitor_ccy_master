@@ -27,6 +27,8 @@ public class CCYLengthFieldDecoder extends ByteToMessageDecoder {
     private long tooLongFrameLength;
     private long bytesToDiscard;
 
+    private long lastRecvTime = System.currentTimeMillis();
+
     public CCYLengthFieldDecoder(int maxFrameLength, int lengthFieldOffset, int lengthFieldLength) {
         this(maxFrameLength, lengthFieldOffset, lengthFieldLength, 0, 0);
     }
@@ -67,7 +69,6 @@ public class CCYLengthFieldDecoder extends ByteToMessageDecoder {
         if (decoded != null) {
             out.add(decoded);
         }
-
     }
 
     protected Object decode(ChannelHandlerContext ctx, ByteBuf in) throws Exception {

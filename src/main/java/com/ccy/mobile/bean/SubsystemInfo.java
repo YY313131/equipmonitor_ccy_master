@@ -23,11 +23,9 @@ public class SubsystemInfo {
     private List<ParameterInfo> parameterInfos;
 
     public SubsystemInfo(int subsystemId, Map<Integer,
-                            CollectedValue> cvMap,
+                         CollectedValue> cvMap,
                          Map<Integer, ParameterStatus> psMap,
                          List<Parameter>pnList
-
-
     ) {
         this.subsystemId = subsystemId;
         setParameterValues(cvMap,psMap,pnList);
@@ -41,15 +39,13 @@ public class SubsystemInfo {
         this.subsystemId = subsystemId;
     }
 
-
-
     public List<ParameterInfo> getParameterInfos() {
         return parameterInfos;
     }
 
     public void setParameterValues(Map<Integer, CollectedValue> cvMap,
                                    Map<Integer, ParameterStatus> psMap,
-                                    List<Parameter> pnList
+                                   List<Parameter> pnList
     ) {
 
         Map<Integer, ParameterInfo> pMap = new HashMap<Integer, ParameterInfo>(32);

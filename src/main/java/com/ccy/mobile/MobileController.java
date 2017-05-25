@@ -30,7 +30,9 @@ import java.util.Map;
 @Controller
 @RequestMapping("/mobile")
 public class MobileController {
+
     private final Logger logger = LoggerFactory.getLogger(MobileController.class);
+
     @Autowired
     private UserService userService;
 
@@ -39,10 +41,9 @@ public class MobileController {
 
     @Autowired
     private ParameterService parameterService;
-  @Autowired
+
+    @Autowired
     private StatusService statusService;
-
-
 
     @RequestMapping(value = "/login", method = RequestMethod.POST)
     @ResponseBody
@@ -69,7 +70,8 @@ public class MobileController {
 
         //TODO 现在没有参数状态需要后期加入
 
-        SubsystemInfo subsystemInfo = new SubsystemInfo(subsystemId,cmap,null,pnlist);
+        SubsystemInfo subsystemInfo =
+                new SubsystemInfo(subsystemId,cmap,null,pnlist);
 
         return  new MobileResult<SubsystemInfo>(true, subsystemInfo);
     }
@@ -78,7 +80,8 @@ public class MobileController {
     @ResponseBody
     public MobileResult<ParameterInfo> getParameterInfo(int subsystemId, int parameterId) {
 
-        CollectedValue collectedValue = collectedDataService.getTopOne(subsystemId, parameterId);
+        CollectedValue collectedValue =
+                collectedDataService.getTopOne(subsystemId, parameterId);
         Parameter parameter=parameterService.getById(parameterId);
         MobileResult<ParameterInfo> mobileResult;
         if (collectedValue == null) {
@@ -111,19 +114,17 @@ public class MobileController {
             mobileResult=new MobileResult<HistoryParameterValue>(true,hisPv);
         }
         return mobileResult;
-
     }
 
     @RequestMapping(value = "/getHistoryAbnormalValue", method = RequestMethod.GET)
     @ResponseBody
     public MobileResult<HistoryAbnormalValue> getHistoryAbnormalValue(
-            int subsystemId, int parameterId,long timeStamp
-
-    )  {
+            int subsystemId, int parameterId,long timeStamp)  {
 
         MobileResult<HistoryAbnormalValue> mobileResult;
 
-        List<ParameterStatus> abnoramls=statusService.getDayAnnormalStatus(subsystemId,parameterId,timeStamp);
+        List<ParameterStatus> abnoramls =
+                statusService.getDayAnnormalStatus(subsystemId,parameterId,timeStamp);
         if(abnoramls==null){
             mobileResult=new MobileResult<HistoryAbnormalValue>(false,"acquire data fail");
         }else{
