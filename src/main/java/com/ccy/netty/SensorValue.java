@@ -20,7 +20,8 @@ public class SensorValue implements Comparable<SensorValue>{
                 ", paramNo=" + paramNo +
                 '}';
     }
+
     public int compareTo(SensorValue o) {
-        return paramNo - o.paramNo;
+        return this.paramNo - o.paramNo;
     }
 }

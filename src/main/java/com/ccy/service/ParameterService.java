@@ -53,4 +53,7 @@ public interface ParameterService {
 	 * @return 参数集合
 	 */
 	List<Parameter> getBySubsystemId(int subsystemId);
+
+
+
 }

@@ -26,6 +26,7 @@ public class CCYCollectedData {
      * 采集器发送的命令
      */
     public byte cmd;
+
     /**
      * 采集值
      */
@@ -71,7 +72,8 @@ public class CCYCollectedData {
                     byte dataType = data[index + 3];
                     if (dataType == 0x00) { // float
                         SensorValue sensorValue = new SensorValue();
-                        sensorValue.paramNo = ByteUtil.getInt(data, index + 1, 2);
+                        sensorValue.paramNo =
+                                ByteUtil.getInt(data, index + 1, 2);
                         sensorValue.value = ByteUtil.getFloat(data, index + 5);
                         sensorValues.add(sensorValue);
                     } else if (dataType == 0x02) {

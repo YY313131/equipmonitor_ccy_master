@@ -1,5 +1,7 @@
 package com.ccy.mobile.bean;
 
+import com.ccy.bean.ParameterStatus;
+
 import java.util.List;
 
 /**
@@ -11,20 +13,17 @@ public class HistoryAbnormalValue {
      */
 
     private int parameterId;
-    /**
-     * 传感器名称
-     */
 
-    private int parameterName;
+
     /**
      * 异常状态列表
      */
 
-    private List<AbnormalStatus> abnormalValueList;
+    private List<ParameterStatus> abnormalValueList;
 
-    public HistoryAbnormalValue(int parameterId, int parameterName, List<AbnormalStatus> abnormalValueList) {
+    public HistoryAbnormalValue(int parameterId, List<ParameterStatus> abnormalValueList) {
         this.parameterId = parameterId;
-        this.parameterName = parameterName;
+
         this.abnormalValueList = abnormalValueList;
     }
 
@@ -32,11 +31,9 @@ public class HistoryAbnormalValue {
         return parameterId;
     }
 
-    public int getParameterName() {
-        return parameterName;
-    }
 
-    public List<AbnormalStatus> getAbnormalValueList() {
+
+    public List<ParameterStatus> getAbnormalValueList() {
         return abnormalValueList;
     }
 }

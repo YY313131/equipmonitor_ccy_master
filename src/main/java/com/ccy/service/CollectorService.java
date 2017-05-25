@@ -88,7 +88,7 @@ public interface CollectorService {
 	/**
 	 * 获取指定指定设备的所有采集器
 	 * 
-	 * @param companyId
+	
 	 * @param deviceId
 	 * @return 采集器集合
 	 */

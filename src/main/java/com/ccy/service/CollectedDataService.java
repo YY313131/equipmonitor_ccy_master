@@ -125,4 +125,17 @@ public interface CollectedDataService {
      * @return
      */
     int getValueCount(int subsystemId,int parameterId,Date date);
+
+	/**
+	 * 获得哪一天的所有参数值
+	 * @param subsystemId
+	 * @param parameterId
+	 * @param dayStamp 哪一天的时间戳
+	 * @return
+	 */
+
+	List<CollectedValue> getDayValueById(int subsystemId,int parameterId ,long dayStamp);
+
+
+
 }
