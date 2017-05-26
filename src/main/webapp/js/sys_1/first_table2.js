@@ -12,6 +12,7 @@ function drawTable() {
 
 }
 
+
 var TableInit = function () {
     var oTableInit = new Object();
     //初始化Table
@@ -43,13 +44,13 @@ var TableInit = function () {
             showToggle:true,                    //是否显示详细视图和列表视图的切换按钮
             cardView: false,                    //是否显示详细视图
             detailView: false,                   //是否显示父子表
-            columns: [{
+            columns:  [{
                 field: 'sensorId',
                 title: '传感器编号',
                 width:'25%'
             }, {
                 field: 'value',
-                title: 'CT04值',
+                title: 'PH-01',
                 width:'25%'
             }, {
                 field: 'currentTime',
@@ -69,7 +70,7 @@ var TableInit = function () {
             pageSize: params.pageSize,   //页面大小
             pageNumber: params.pageNumber,  //页码
             subsystemId:1,
-            parameterId:3,
+            parameterId:2,
             beginTime:$("#datetimepicker").val()
             // departmentname: $("#txt_search_departmentname").val(),
             // statu: $("#txt_search_statu").val()

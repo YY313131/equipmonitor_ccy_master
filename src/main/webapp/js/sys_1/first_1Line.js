@@ -8,12 +8,12 @@ window.onload=function () {
         var data1={};
         if($("#endTime").val()!=""&&($("#startTime").val()!=$("#endTime").val())){
             url="../../valueListBetweenDate";
-            data1={subsystemId:1,parameterId:3,
+            data1={subsystemId:1,parameterId:1,
                 beginTime:$("#startTime").val(),
                 endTime:$("#endTime").val()};
         }else {
             url="../../getOneDayValue";
-            data1={subsystemId:1,parameterId:3,
+            data1={subsystemId:1,parameterId:1,
                 time:$("#startTime").val()};
         }
         $.ajax({
@@ -29,7 +29,7 @@ window.onload=function () {
     })
     $.ajax({
         url:"../../defaultValueList",
-        data:{subsystemId:1,parameterId:3},
+        data:{subsystemId:1,parameterId:1},
         type:"GET",
         success:function (data) {
           //  alert(data);
@@ -53,17 +53,17 @@ window.onload=function () {
 //                        '#FFFFFF',//紫
 //                    ],
             title: {
-                text: 'PH-01 RO膜'
+                text: 'CT-02 RO膜'
             },
             subtitle: {
-                text: 'PH值'
+                text: '电导值'
             },
             xAxis: {
                 categories: ['8:30', '9:00', '9:30', '10:00', '10:30', '11:00', '11:30', '12:00', '12:30', '13:00', '13:30', '14:00','14:30','15:00','15:30','16:00']
             },
             yAxis: {
                 title: {
-                    text: 'PH(5-7)'
+                    text: '电导'
                 }
             },
             plotOptions: {
@@ -75,10 +75,10 @@ window.onload=function () {
                 }
             },
             series: [{
-                name: 'PH当前数据',
+                name: '历史曲线',
                 data: dataList
             },{
-                name:'PH历史数据',
+                name:'平均曲线',
                 data:[7.0, 6.9, 7.8, 8.6, 8.3, 7.2, 6.3,4.3, 3.5, 2.5, 5.5, 4.2,5.3,4.2,5.6,6.2]
             }]
         });

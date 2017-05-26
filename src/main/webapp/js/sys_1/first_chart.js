@@ -99,7 +99,7 @@ $(function () {
                 height: 300
             },
             title: {
-                text: '巴氏杀菌温度'
+                text: 'RO膜 出水电导'
             },
             pane: [{
                 startAngle: -45,
@@ -118,7 +118,7 @@ $(function () {
                     distance: 20
                 },
                 plotBands: [{
-                    from: 25,
+                    from: 21,
                     to: 30,
                     color: '#C02316',
                     innerRadius: '100%',
@@ -126,7 +126,7 @@ $(function () {
                 }],
                 pane: 0,
                 title: {
-                    text: '温度<br/>',
+                    text: '电导<br/>',
                     y: -40
                 }
             }],
@@ -162,7 +162,7 @@ $(function () {
                             var a=parseFloat(valueArray[0]);
                             console.log(a);
                             var a1=Math.floor(a* 100) / 100;
-                            $("#ph").html("&nbsp;&nbsp;&nbsp;"+a1+" ℃");
+                            $("#ph").html("&nbsp;&nbsp;&nbsp;"+a1+" uS");
                             value.update(a1, false);
                             chart.redraw();
                             //更新状态
@@ -198,7 +198,7 @@ $(function () {
             height: 300
         },
         title: {
-            text: 'RO产水PH值'
+            text: 'RO膜 PH值'
         },
         pane: [{
             startAngle: -45,
@@ -217,7 +217,7 @@ $(function () {
                 distance: 20
             },
             plotBands: [{
-                from: 10,
+                from: 7,
                 to: 14,
                 color: '#C02316',
                 innerRadius: '100%',
@@ -293,7 +293,7 @@ $(function () {
             height: 300
         },
         title: {
-            text: 'EDI出水电导率'
+            text: 'EDI  出水电导'
         },
         pane: [{
             startAngle: -45,
@@ -304,7 +304,7 @@ $(function () {
         }],
         yAxis: [{
             min: 0,
-            max: 6,
+            max: 8,
             minorTickPosition: 'outside',
             tickPosition: 'outside',
             labels: {
@@ -312,15 +312,15 @@ $(function () {
                 distance: 20
             },
             plotBands: [{
-                from: 4,
-                to: 6,
+                from: 4.3,
+                to: 8,
                 color: '#C02316',
                 innerRadius: '100%',
                 outerRadius: '105%'
             }],
             pane: 0,
             title: {
-                text: '电导率<br/>',
+                text: '电导<br/>',
                 y: -40
             }
         }],

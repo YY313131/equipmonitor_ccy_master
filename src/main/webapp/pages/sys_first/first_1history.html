@@ -15,26 +15,21 @@
             background-color:#D33F3E;
             margin-top:10px;
         }
-        .hisTitle{
-            font-size: 20px;
-            font-family:"Arial Black";
-            font-weight: 700;
-        }
     </style>
 </head>
 <body>
-<label style="font-size: 24px;margin-top: 10px">CT-02 RO膜历史数据</label>
+<label style="font-size: 24px;margin-top: 10px">RO膜出水电导历史数据</label>
 <div class="line" ></div>
 <div class="form-horizontal" role="form" style="margin-top:10px;margin-left:20px">
-    <div class="form-group">
-        <label>起始时间：</label><input type="text" id="startTime" class="text-info" style="width:130px;height: 30px;">
-        <label style="margin-left: 20px">结束时间：</label><input type="text" id="endTime" class="text-info" style="width:130px;height: 30px;">
-        <button type="button" class="btn btn-info" style="width:100px;margin-left: 20px;" id="select">查询</button>
-    </div>
+        <div class="form-group">
+            <label>起始时间：</label><input type="text" id="startTime" class="text-info" style="width:130px;height: 30px;">
+            <label style="margin-left: 20px">结束时间：</label><input type="text" id="endTime" class="text-info" style="width:130px;height: 30px;">
+            <button type="button" class="btn btn-info" style="width:100px;margin-left: 20px;" id="select">查询</button>
+        </div>
 </div>
 <div >
     <div class="line"></div>
-    <label style="background-color: #d33f3e;color:white ;font-size: 16px;width: 150px;text-align: center">实时参数</label>
+    <label style="background-color: #d33f3e;color:white ;font-size: 16px;width: 150px;text-align: center">历史曲线</label>
     <div id="dynamic1"></div>
 </div>
 <script src="../../js/Jquery/jquery-2.1.1.js"></script>
@@ -43,6 +38,6 @@
 <script src="../../js/Highchart/exporting.js"></script>
 <script src="../../js/Bootstrap/bootstrap.js"></script>
 <script src="../../js/Jquery/jquery.datetimepicker.full.js"></script>
-<script src="../../js/sys_1/first_ct2Line.js"></script>
+<script src="../../js/sys_1/first_1Line.js"></script>
 </body>
 </html>

@@ -55,7 +55,7 @@ public class SysController {
         }
         List<Double> list=new ArrayList<Double>();
         for (CollectedValue collectedValue:collectedValues){
-            list.add(collectedValue.getValue());
+            list.add((double)Math.round(collectedValue.getValue()*100)/100);
         }
         return list;
     }
@@ -69,7 +69,7 @@ public class SysController {
         }
         List<Double> list=new ArrayList<Double>();
         for (CollectedValue collectedValue:collectedValues){
-            list.add(collectedValue.getValue());
+            list.add((double)Math.round(collectedValue.getValue()*100)/100);
         }
         return list;
     }
@@ -83,7 +83,7 @@ public class SysController {
         }
         List<Double> list=new ArrayList<Double>();
         for (CollectedValue collectedValue:collectedValues){
-            list.add(collectedValue.getValue());
+            list.add((double)Math.round(collectedValue.getValue()*100)/100);
         }
         return list;
     }
@@ -102,7 +102,7 @@ public class SysController {
         }
         List<Double> list=new ArrayList<Double>();
         for (CollectedValue collectedValue:collectedValues){
-            list.add(collectedValue.getValue());
+            list.add((double)Math.round(collectedValue.getValue()*100)/100);
         }
         return list;
     }

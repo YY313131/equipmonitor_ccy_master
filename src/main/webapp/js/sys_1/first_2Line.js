@@ -8,12 +8,12 @@ window.onload=function () {
         var data1={};
         if($("#endTime").val()!=""&&($("#startTime").val()!=$("#endTime").val())){
             url="../../valueListBetweenDate";
-            data1={subsystemId:1,parameterId:1,
+            data1={subsystemId:1,parameterId:2,
                 beginTime:$("#startTime").val(),
                 endTime:$("#endTime").val()};
         }else {
             url="../../getOneDayValue";
-            data1={subsystemId:1,parameterId:1,
+            data1={subsystemId:1,parameterId:2,
                 time:$("#startTime").val()};
         }
         $.ajax({
@@ -29,7 +29,7 @@ window.onload=function () {
     })
     $.ajax({
         url:"../../defaultValueList",
-        data:{subsystemId:1,parameterId:1},
+        data:{subsystemId:1,parameterId:2},
         type:"GET",
         success:function (data) {
           //  alert(data);
@@ -63,7 +63,7 @@ window.onload=function () {
             },
             yAxis: {
                 title: {
-                    text: 'PH(5-7)'
+
                 }
             },
             plotOptions: {
@@ -75,16 +75,15 @@ window.onload=function () {
                 }
             },
             series: [{
-                name: 'PH当前数据',
+                name: '历史曲线',
                 data: dataList
             },{
-                name:'PH历史数据',
+                name:'平均曲线',
                 data:[7.0, 6.9, 7.8, 8.6, 8.3, 7.2, 6.3,4.3, 3.5, 2.5, 5.5, 4.2,5.3,4.2,5.6,6.2]
             }]
         });
     }
     // submmitAjax();
-
 }
 $(function(){
     $('#startTime').datetimepicker({
@@ -100,5 +99,5 @@ $(function(){
         disabledDates: ['1986/01/08', '1986/01/09', '1986/01/10'],
         startDate: '2015/11/01'
     });
-    // $('#endTime').datetimepicker({ value: '2015/11/02 ', step: 10 });
+    // $('#endTime').datetimepicker({ value: ' ', step: 10 });
 });
