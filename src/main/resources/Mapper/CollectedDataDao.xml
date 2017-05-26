@@ -76,7 +76,7 @@
 			${tableName}
 		where
 			time>=#{beginTime}
-		order by time limit ${pageNumber},${pageSize}
+		order by time desc limit ${pageNumber},${pageSize}
 	</select>
 	<select id="getCount" resultType="java.lang.Integer">
 		select COUNT(*) from

@@ -29,7 +29,7 @@ $(function () {
         }],
         yAxis: [{
             min: 0,
-            max: 2,
+            max: 60,
             minorTickPosition: 'outside',
             tickPosition: 'outside',
             labels: {
@@ -37,8 +37,8 @@ $(function () {
                 distance: 20
             },
             plotBands: [{
-                from: 1,
-                to: 2,
+                from: 30,
+                to: 60,
                 color: '#C02316',
                 innerRadius: '100%',
                 outerRadius: '105%'
@@ -63,7 +63,45 @@ $(function () {
             data: [0.8],
             yAxis: 0
         }]
-    }  );
+    } ,
+        //一秒请求一次
+        function (chart) {
+            setInterval(function () {
+                if(chart.series){
+                    var value=chart.series[0].points[0];
+                    $.ajax({
+                        url: "../../getSys1TopValue",
+                        type: "GET",
+                        data:{subsystemId:2,parameterId:7},
+                        // async:"false",
+                        success: function (data) {
+                            //  更新图表
+                            console.log(data);
+                            var valueArray=data.split(";");
+                            var a=parseFloat(valueArray[0]);
+                            console.log(a);
+                            var a1=Math.floor(a* 100) / 100;
+                            $("#ele1").html("&nbsp;&nbsp;&nbsp;"+a1+" us");
+                            value.update(a1, false);
+                            chart.redraw();
+                            //更新状态
+                            // alert(valueArray[1]);
+                            if(valueArray[1]==0){
+                                $("#normal3").removeClass("btn-success btn-danger");
+                                $("#normal3").addClass("btn-danger");
+                                $("#normal3").html("状态异常");
+                            }else{
+                                $("#normal3").removeClass("btn-danger btn-success");
+                                $("#normal3").addClass("btn-success");
+                                $("#normal3").html("状态正常");
+                            }
+                        }
+                    })
+                }
+            },1000);
+        });
+
+    //temp1
     $('#temp1').highcharts({
         chart: {
             type: 'gauge',
@@ -149,7 +187,45 @@ $(function () {
                 valueSuffix: ' 度'
             }
         }]
-    } );
+    } ,
+        function (chart) {
+            setInterval(function () {
+                if(chart.series){
+                    var value=chart.series[0].points[0];
+                    $.ajax({
+                        url: "../../getSys1TopValue",
+                        type: "GET",
+                        data:{subsystemId:2,parameterId:5},
+                        // async:"false",
+                        success: function (data) {
+                            //  更新图表
+                            console.log(data);
+                            var valueArray=data.split(";");
+                            var a=parseFloat(valueArray[0]);
+                            console.log(a);
+                            var a1=Math.floor(a* 100) / 100;
+                            $("#temp1_1").html("&nbsp;&nbsp;&nbsp;"+a1+" ℃");
+                            value.update(a1, false);
+                            chart.redraw();
+                            //更新状态
+                            // alert(valueArray[1]);
+                            if(valueArray[1]==0){
+                                $("#normal1").removeClass("btn-success btn-danger");
+                                $("#normal1").addClass("btn-danger");
+                                $("#normal1").html("状态异常");
+                            }else{
+                                $("#normal1").removeClass("btn-danger btn-success");
+                                $("#normal1").addClass("btn-success");
+                                $("#normal1").html("状态正常");
+                            }
+                        }
+                    })
+                }
+            },1000);
+        });
+
+
+    //temp2
     $('#temp2').highcharts({
         chart: {
             type: 'gauge',
@@ -235,5 +311,60 @@ $(function () {
                 valueSuffix: ' 度'
             }
         }]
-    } );
-});
+    },
+        function (chart) {
+        setInterval(function () {
+            if(chart.series){
+                var value=chart.series[0].points[0];
+                $.ajax({
+                    url: "../../getSys1TopValue",
+                    type: "GET",
+                    data:{subsystemId:2,parameterId:6},
+                    // async:"false",
+                    success: function (data) {
+                        //  更新图表
+                        console.log(data);
+                        var valueArray=data.split(";");
+                        var a=parseFloat(valueArray[0]);
+                        console.log(a);
+                        var a1=Math.floor(a* 100) / 100;
+                        $("#temp2_1").html("&nbsp;&nbsp;&nbsp;"+a1+"℃");
+                        value.update(a1, false);
+                        chart.redraw();
+                        //更新状态
+                        // alert(valueArray[1]);
+                        if(valueArray[1]==0){
+                            $("#normal2").removeClass("btn-success btn-danger");
+                            $("#normal2").addClass("btn-danger");
+                            $("#normal2").html("状态异常");
+                        }else{
+                            $("#normal2").removeClass("btn-danger btn-success");
+                            $("#normal2").addClass("btn-success");
+                            $("#normal2").html("状态正常");
+                        }
+                    }
+                })
+            }
+        },1000);
+    });
+
+    setInterval(function () {
+        $.ajax({
+            url: "../../getSys1TopValue",
+            type: "GET",
+            data:{subsystemId:2,parameterId:4},
+            // async:"false",
+            success: function (data) {
+                //  更新图表
+                console.log(data);
+                var valueArray=data.split(";");
+                var a=parseFloat(valueArray[0]);
+                console.log(a);
+                var a1=Math.floor(a* 1000) / 1000;
+                $("#liu_state2").val(a1+" t/h");
+
+            }
+        })
+    },1000)
+})
+
