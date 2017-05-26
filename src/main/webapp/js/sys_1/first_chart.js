@@ -99,7 +99,7 @@ $(function () {
                 height: 300
             },
             title: {
-                text: 'PH值'
+                text: '巴氏杀菌温度'
             },
             pane: [{
                 startAngle: -45,
@@ -110,7 +110,7 @@ $(function () {
             }],
             yAxis: [{
                 min: 0,
-                max: 20,
+                max: 30,
                 minorTickPosition: 'outside',
                 tickPosition: 'outside',
                 labels: {
@@ -118,15 +118,15 @@ $(function () {
                     distance: 20
                 },
                 plotBands: [{
-                    from: 14,
-                    to: 20,
+                    from: 25,
+                    to: 30,
                     color: '#C02316',
                     innerRadius: '100%',
                     outerRadius: '105%'
                 }],
                 pane: 0,
                 title: {
-                    text: 'PH<br/>',
+                    text: '温度<br/>',
                     y: -40
                 }
             }],
@@ -162,7 +162,7 @@ $(function () {
                             var a=parseFloat(valueArray[0]);
                             console.log(a);
                             var a1=Math.floor(a* 100) / 100;
-                            $("#ph").html("&nbsp;&nbsp;&nbsp;"+a1);
+                            $("#ph").html("&nbsp;&nbsp;&nbsp;"+a1+" ℃");
                             value.update(a1, false);
                             chart.redraw();
                             //更新状态
@@ -198,7 +198,7 @@ $(function () {
             height: 300
         },
         title: {
-            text: 'CT-02出水电导'
+            text: 'RO产水PH值'
         },
         pane: [{
             startAngle: -45,
@@ -209,7 +209,7 @@ $(function () {
         }],
         yAxis: [{
             min: 0,
-            max: 8,
+            max: 14,
             minorTickPosition: 'outside',
             tickPosition: 'outside',
             labels: {
@@ -217,15 +217,15 @@ $(function () {
                 distance: 20
             },
             plotBands: [{
-                from: 4,
-                to: 8,
+                from: 10,
+                to: 14,
                 color: '#C02316',
                 innerRadius: '100%',
                 outerRadius: '105%'
             }],
             pane: 0,
             title: {
-                text: '电导<br/>',
+                text: 'PH<br/>',
                 y: -40
             }
         }],
@@ -293,7 +293,7 @@ $(function () {
             height: 300
         },
         title: {
-            text: 'CT-04出水电导'
+            text: 'EDI出水电导率'
         },
         pane: [{
             startAngle: -45,
@@ -304,7 +304,7 @@ $(function () {
         }],
         yAxis: [{
             min: 0,
-            max: 8,
+            max: 6,
             minorTickPosition: 'outside',
             tickPosition: 'outside',
             labels: {
@@ -313,14 +313,14 @@ $(function () {
             },
             plotBands: [{
                 from: 4,
-                to: 8,
+                to: 6,
                 color: '#C02316',
                 innerRadius: '100%',
                 outerRadius: '105%'
             }],
             pane: 0,
             title: {
-                text: '电导<br/>',
+                text: '电导率<br/>',
                 y: -40
             }
         }],
@@ -355,7 +355,7 @@ $(function () {
                             var a=parseFloat(valueArray[0]);
                             console.log(a);
                             var a1=Math.floor(a* 100) / 100;
-                            $("#ct04").html("&nbsp;&nbsp;&nbsp;"+a1);
+                            $("#ct04").html("&nbsp;&nbsp;&nbsp;"+a1+" uS");
                             value.update(a1, false);
                             chart.redraw();
                             if(valueArray[1]==0){
