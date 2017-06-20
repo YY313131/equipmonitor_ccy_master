@@ -109,7 +109,6 @@ public class MobileController {
         if(collectedValues==null){
             mobileResult=new MobileResult<HistoryParameterValue>(false,"acquire data fail");
         }else {
-
             HistoryParameterValue hisPv=new HistoryParameterValue(parameterId,collectedValues);
             mobileResult=new MobileResult<HistoryParameterValue>(true,hisPv);
         }
