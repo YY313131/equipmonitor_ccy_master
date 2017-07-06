@@ -26,11 +26,6 @@ public class NettyServerHandler extends SimpleChannelInboundHandler<Object> {
     private CollectedDataService collectedDataService;
 
     /**
-     * 上次存储数据的时间
-     */
-    private long lastSaveTime = System.currentTimeMillis();
-
-    /**
      * A thread-safe Set  Using ChannelGroup, you can categorize Channels into a meaningful group.
      * A closed Channel is automatically removed from the collection,
      */
@@ -56,14 +51,10 @@ public class NettyServerHandler extends SimpleChannelInboundHandler<Object> {
         if(s instanceof CCYCollectedData) {
             CCYCollectedData collectedValue = (CCYCollectedData) s;
             if(collectedValue.errorMsg == null){
-                if(System.currentTimeMillis() - lastSaveTime > 1800) {
-                    collectedDataService.add(collectedValue);
-                    lastSaveTime = System.currentTimeMillis();
-                }
+                collectedDataService.add(collectedValue);
                 responseSensorCollector(ctx, collectedValue);
             } else {
                 System.out.println(collectedValue.errorMsg);
-
             }
             // TODO...
         }
@@ -76,10 +67,10 @@ public class NettyServerHandler extends SimpleChannelInboundHandler<Object> {
         resp[2] = (byte)cd.areaNo.charAt(1);
         resp[3] = (byte)cd.areaNo.charAt(2);
         resp[4] = 0x00;
-        resp[5] = (byte)(cd.collectorNo / 1000);
-        resp[6] = (byte)((cd.collectorNo % 1000) / 100);
-        resp[7] = (byte)((cd.collectorNo % 100) / 10);
-        resp[8] = (byte)(cd.collectorNo % 10);
+        resp[5] = (byte)((cd.collectorNo / 1000) + 0x30);
+        resp[6] = (byte)(((cd.collectorNo % 1000) / 100) + 0x30);
+        resp[7] = (byte)(((cd.collectorNo % 100) / 10) + 0x30);
+        resp[8] = (byte)((cd.collectorNo % 10) + 0x30);
         resp[9] = 0x69;
         resp[10] = 0x02;
         resp[11] = (byte)(cd.cmd + 0x80);
