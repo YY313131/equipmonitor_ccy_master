@@ -21,7 +21,7 @@ import com.ccy.service.CollectedDataService;
 @Service
 public class CollectedDataServiceImpl implements CollectedDataService {
 
-	private static final String DataTableNamePrefix = "collecteddata";
+	private static final String DataTableNamePrefix = "collected_data";
 
 	@Autowired
 	private CollectorDao collectorDao;

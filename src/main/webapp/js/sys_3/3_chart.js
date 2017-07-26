@@ -147,7 +147,7 @@ $(function () {
         // the value axis
         yAxis: {
             min: 0,
-            max: 50,
+            max: 100,
             minorTickInterval: 'auto',
             minorTickWidth: 1,
             minorTickLength: 10,
@@ -167,16 +167,17 @@ $(function () {
             },
             plotBands: [{
                 from: 0,
-                to: 26.4,
-                color: '#55BF3B' // green
+                to: 75,
+                color: '#DF5353' // green
+
             }, {
-                from: 26.4,
-                to: 40,
+                from: 75,
+                to: 82,
                 color: '#DDDF0D' // yellow
             }, {
-                from: 40,
-                to: 50,
-                color: '#DF5353' // red
+                from: 82,
+                to: 100,
+                color: '#55BF3B' // red
             }]
         },
         series: [{
@@ -222,7 +223,7 @@ $(function () {
                 }
             },1000);
         });
-
+    //TT502A
     $('#temp2_3').highcharts({
         chart: {
             type: 'gauge',
@@ -303,48 +304,14 @@ $(function () {
         },
         series: [{
             name: 'temprature',
-            data: [26],
+            data: [0],
             tooltip: {
                 valueSuffix: ' 度'
             }
         }]
-    } ,
-        function (chart) {
-            setInterval(function () {
-                if(chart.series){
-                    var value=chart.series[0].points[0];
-                    $.ajax({
-                        url: "../../getSys1TopValue",
-                        type: "GET",
-                        data:{subsystemId:3,parameterId:6},
-                        // async:"false",
-                        success: function (data) {
-                            //  更新图表
-                            console.log(data);
-                            var valueArray=data.split(";");
-                            var a=parseFloat(valueArray[0]);
-                            console.log(a);
-                            var a1=Math.floor(a* 100) / 100;
-                            $("#temp3_2").html("&nbsp;&nbsp;&nbsp;"+a1+"  ℃");
-                            value.update(a1, false);
-                            chart.redraw();
-                            //更新状态
-                            // alert(valueArray[1]);
-                            if(valueArray[1]==0){
-                                $("#normal2").removeClass("btn-success btn-danger");
-                                $("#normal2").addClass("btn-danger");
-                                $("#normal2").html("状态异常");
-                            }else{
-                                $("#normal2").removeClass("btn-danger btn-success");
-                                $("#normal2").addClass("btn-success");
-                                $("#normal2").html("状态正常");
-                            }
-                        }
-                    })
-                }
-            },1000);
-        });
-
+    });
+    $("#temp3_2").html("&nbsp;&nbsp;&nbsp;"+"未采集");
+    //TT502B
     $('#temp3_3').highcharts({
         chart: {
             type: 'gauge',
@@ -430,44 +397,11 @@ $(function () {
                 valueSuffix: ' 度'
             }
         }]
-    },
-        function (chart) {
-            setInterval(function () {
-                if(chart.series){
-                    var value=chart.series[0].points[0];
-                    $.ajax({
-                        url: "../../getSys1TopValue",
-                        type: "GET",
-                        data:{subsystemId:3,parameterId:9},
-                        // async:"false",
-                        success: function (data) {
-                            //  更新图表
-                            console.log(data);
-                            var valueArray=data.split(";");
-                            var a=parseFloat(valueArray[0]);
-                            console.log(a);
-                            var a1=Math.floor(a* 1000) / 1000;
-                            $("#temp3_33").html("&nbsp;&nbsp;&nbsp;"+a1+"  ℃");
-                            value.update(a1, false);
-                            chart.redraw();
-                            //更新状态
-                            // alert(valueArray[1]);
-                            if(valueArray[1]==0){
-                                $("#normal3").removeClass("btn-success btn-danger");
-                                $("#normal3").addClass("btn-danger");
-                                $("#normal3").html("状态异常");
-                            }else{
-                                $("#normal3").removeClass("btn-danger btn-success");
-                                $("#normal3").addClass("btn-success");
-                                $("#normal3").html("状态正常");
-                            }
-                        }
-                    })
-                }
-            },1000);
-        });
+    });
+    $("#temp3_33").html("&nbsp;&nbsp;&nbsp;"+"未采集");
 
-        setInterval(function () {
+
+    setInterval(function () {
             $.ajax({
                 url: "../../getSys1TopValue",
                 type: "GET",

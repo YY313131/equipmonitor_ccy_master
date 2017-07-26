@@ -51,8 +51,12 @@ public class NettyServerHandler extends SimpleChannelInboundHandler<Object> {
         if(s instanceof CCYCollectedData) {
             CCYCollectedData collectedValue = (CCYCollectedData) s;
             if(collectedValue.errorMsg == null){
-                collectedDataService.add(collectedValue);
-                responseSensorCollector(ctx, collectedValue);
+                if(collectedValue.sensorValues.size()==0){
+                    responseSensorCollector(ctx, collectedValue);
+                }else {
+                    collectedDataService.add(collectedValue);
+                    responseSensorCollector(ctx, collectedValue);
+                }
             } else {
                 System.out.println(collectedValue.errorMsg);
             }
@@ -66,7 +70,7 @@ public class NettyServerHandler extends SimpleChannelInboundHandler<Object> {
         resp[1] = (byte)cd.areaNo.charAt(0);
         resp[2] = (byte)cd.areaNo.charAt(1);
         resp[3] = (byte)cd.areaNo.charAt(2);
-        resp[4] = 0x00;
+        resp[4] = 0x30;
         resp[5] = (byte)((cd.collectorNo / 1000) + 0x30);
         resp[6] = (byte)(((cd.collectorNo % 1000) / 100) + 0x30);
         resp[7] = (byte)(((cd.collectorNo % 100) / 10) + 0x30);
