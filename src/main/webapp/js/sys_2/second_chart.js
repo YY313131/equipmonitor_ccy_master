@@ -153,7 +153,7 @@ $(function () {
         // the value axis
         yAxis: {
             min: 0,
-            max: 50,
+            max: 100,
             minorTickInterval: 'auto',
             minorTickWidth: 1,
             minorTickLength: 10,
@@ -173,16 +173,16 @@ $(function () {
             },
             plotBands: [{
                 from: 0,
-                to: 26.4,
-                color: '#55BF3B' // green
+                to: 75,
+                color: '#DF5353' // red
             }, {
-                from: 26.4,
-                to: 40,
+                from: 75,
+                to: 82,
                 color: '#DDDF0D' // yellow
             }, {
-                from: 40,
-                to: 50,
-                color: '#DF5353' // red
+                from: 82,
+                to: 100,
+                color: '#55BF3B' // green
             }]
         },
         series: [{
